@@ -85,6 +85,24 @@ def acumular_temperaturas(hardware, candidatos):
         acumular_temperaturas(sub, candidatos)
 
 
+def acumular_sensores_avanzados(hardware, candidatos):
+    """Lee voltajes, ventiladores y salud SMART si el hardware los expone."""
+    categoria = str(hardware.HardwareType)
+    for sensor in hardware.Sensors:
+        if sensor.Value is None:
+            continue
+        metrica, prioridad = metricas.clasificar_avanzado(
+            categoria, sensor.Name, sensor.SensorType
+        )
+        if metrica:
+            candidatos.setdefault(metrica, []).append(
+                (prioridad, float(sensor.Value))
+            )
+    for sub in hardware.SubHardware:
+        sub.Update()
+        acumular_sensores_avanzados(sub, candidatos)
+
+
 def _leer_valores(intervalo_cpu):
     candidatos = {}
     equipo = obtener_equipo()
@@ -92,6 +110,7 @@ def _leer_valores(intervalo_cpu):
         for hardware in equipo.Hardware:
             hardware.Update()
             acumular_temperaturas(hardware, candidatos)
+            acumular_sensores_avanzados(hardware, candidatos)
 
     valores = {
         "cpu_load": (psutil.cpu_percent(interval=intervalo_cpu), "%"),

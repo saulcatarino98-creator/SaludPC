@@ -11,6 +11,7 @@ import pandas as pd
 import almacen
 import metricas
 import rutas
+import tendencias
 
 log = logging.getLogger("salud.cerebro")
 
@@ -31,14 +32,21 @@ def numero_json(valor):
     return valor if math.isfinite(valor) else None
 
 
-def resumen(serie):
-    return {
+def resumen(serie, tiempos=None):
+    resultado = {
         "n": int(serie.count()),
         "mediana": float(serie.median()),
         "p95": float(serie.quantile(0.95)),
         "p99": float(serie.quantile(0.99)),
         "max": float(serie.max()),
     }
+    if tiempos is not None and len(tiempos) == len(serie):
+        resultado["pendiente"] = tendencias.calcular_pendiente(
+            [float(v) for v in serie], tiempos
+        )
+    else:
+        resultado["pendiente"] = 0.0
+    return resultado
 
 
 def limite_aviso(p95, metrica):
@@ -75,7 +83,7 @@ def calcular_metricas(df):
         if metrica not in metricas.TECHOS_ROJO or len(grupo) < MIN_GLOBAL:
             continue
 
-        global_ = resumen(grupo["valor"])
+        global_ = resumen(grupo["valor"], grupo["ts"].tolist())
         datos = {
             "unidad": metricas.UNIDADES[metrica],
             "n": global_["n"],
@@ -83,6 +91,7 @@ def calcular_metricas(df):
             "p95": numero_json(global_["p95"]),
             "p99": numero_json(global_["p99"]),
             "max": numero_json(global_["max"]),
+            "pendiente": numero_json(global_["pendiente"]),
             "limite_aviso": numero_json(limite_aviso(global_["p95"], metrica)),
             "limite_rojo": numero_json(metricas.TECHOS_ROJO[metrica]),
             "franjas": {},
@@ -91,7 +100,7 @@ def calcular_metricas(df):
         for franja, sub in grupo.groupby("franja"):
             if len(sub) < MIN_FRANJA:
                 continue
-            fs = resumen(sub["valor"])
+            fs = resumen(sub["valor"], sub["ts"].tolist())
             datos["franjas"][franja] = {
                 "n": fs["n"],
                 "mediana": numero_json(fs["mediana"]),

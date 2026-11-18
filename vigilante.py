@@ -8,6 +8,7 @@ from pathlib import Path
 import almacen
 import metricas
 import rutas
+import tendencias
 
 DIRECTORIO = rutas.carpeta_datos()
 
@@ -178,6 +179,27 @@ def diagnosticar(directorio=None, ahora=None):
 
         aviso, rojo = limite_para(entrada, ahora_local)
         estado = estado_metrica(valores, aviso, rojo)
+
+        # ---- Análisis predictivo por tendencia térmica ----
+        if metrica in ("cpu_temp", "gpu_temp", "disk_temp"):
+            prefijo = metrica.split("_")[0]  # cpu, gpu, disk
+            metrica_trend = f"temp_trend_{prefijo}"
+            pendiente_actual = float(entrada.get("pendiente") or 0.0)
+            umbral_trend = metricas.PISOS_AVISO.get(metrica_trend)
+            if umbral_trend is not None and pendiente_actual > 0:
+                minutos_proj = tendencias.minutos_a_umbral(
+                    valores[-1], pendiente_actual, rojo
+                )
+                if minutos_proj is not None and minutos_proj <= 30:
+                    if estado == "ok":
+                        estado = "atencion"
+                    detalles_extra = {
+                        "pendiente": round(pendiente_actual, 3),
+                        "proyectado_min": round(minutos_proj, 1),
+                    }
+                    if detalles and detalles[-1]["metrica"] == metrica:
+                        detalles[-1].update(detalles_extra)
+
         detalles.append(
             {
                 "metrica": metrica,
@@ -201,7 +223,14 @@ def diagnosticar(directorio=None, ahora=None):
         )
 
     problemas = [detalle for detalle in detalles if detalle["estado"] == peor]
-    titulo, consejo = MENSAJES[problemas[0]["metrica"]]
+    metrica_peor = problemas[0]["metrica"]
+    titulo, consejo = MENSAJES.get(
+        metrica_peor,
+        (
+            f"{metricas.NOMBRES.get(metrica_peor, metrica_peor)} está fuera de lo normal.",
+            "Revisá el valor y el historial del equipo.",
+        ),
+    )
     return salida(peor, f"{titulo} {consejo}", detalles, ultima)
 
 
