@@ -1,0 +1,530 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Manual de uso de SaludPC</title>
+<style>
+@page {
+    size: A4;
+    margin: 2.2cm 2.1cm 2.1cm 2.1cm;
+}
+body {
+    font-family: Calibri, Carlito, sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.38;
+    color: #23302F;
+    margin: 0;
+}
+p { margin: 0 0 8pt 0; text-align: justify; }
+h1 {
+    font-family: "Calibri Light", Calibri, sans-serif;
+    font-size: 17pt;
+    color: #0F4C5C;
+    margin: 18pt 0 7pt 0;
+    padding-bottom: 3pt;
+    border-bottom: 1.2pt solid #C9DCDD;
+    page-break-after: avoid;
+    mso-outline-level: 1;
+}
+h2 {
+    font-family: "Calibri Light", Calibri, sans-serif;
+    font-size: 13pt;
+    color: #17606F;
+    margin: 13pt 0 5pt 0;
+    page-break-after: avoid;
+    mso-outline-level: 2;
+}
+h3 {
+    font-family: Calibri, sans-serif;
+    font-size: 11pt;
+    color: #2B4A50;
+    margin: 11pt 0 4pt 0;
+    page-break-after: avoid;
+    mso-outline-level: 3;
+}
+strong { color: #17383F; }
+code {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 9pt;
+    background: #F1F4F4;
+    color: #1E4A54;
+    padding: 0 2pt;
+}
+pre {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 9pt;
+    background: #F4F6F6;
+    border-left: 3pt solid #7FAEB3;
+    padding: 6pt 9pt;
+    margin: 7pt 0 10pt 0;
+    white-space: pre-wrap;
+}
+pre code { background: transparent; padding: 0; }
+blockquote {
+    margin: 8pt 0;
+    padding: 5pt 10pt;
+    border-left: 3pt solid #7FAEB3;
+    background: #F4F8F8;
+    color: #35575C;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 7pt 0 12pt 0;
+    font-size: 9pt;
+    page-break-inside: avoid;
+    mso-table-lspace: 0pt;
+    mso-table-rspace: 0pt;
+}
+th {
+    background: #E4F0F1;
+    color: #123E47;
+    font-weight: bold;
+    text-align: left;
+    border: 0.75pt solid #B9CDD0;
+    padding: 4pt 5pt;
+    vertical-align: top;
+}
+td {
+    border: 0.75pt solid #C9D7D9;
+    padding: 3.5pt 5pt;
+    vertical-align: top;
+}
+tr { page-break-inside: avoid; }
+ul, ol { margin: 3pt 0 9pt 16pt; padding: 0; }
+li { margin: 0 0 3.5pt 0; text-align: justify; }
+p.num {
+    margin: 0 0 5pt 0;
+    padding-left: 20pt;
+    text-indent: -20pt;
+    text-align: justify;
+}
+.num-n { font-weight: bold; color: #17606F; }
+hr {
+    border: none;
+    border-top: 0.75pt solid #D6E1E2;
+    margin: 14pt 0;
+}
+a { color: #17606F; text-decoration: none; }
+.pagebreak { page-break-before: always; height: 0; line-height: 0; font-size: 1pt; }
+li.sub { margin-left: 18pt; list-style-type: circle; }
+
+/* Portada */
+.cover { margin-top: 4.2cm; }
+.cover-kicker {
+    font-size: 9pt;
+    letter-spacing: 2.2pt;
+    text-transform: uppercase;
+    color: #2C7A86;
+    margin-bottom: 14pt;
+}
+.cover-title {
+    font-family: "Calibri Light", Calibri, sans-serif;
+    font-size: 40pt;
+    line-height: 1.02;
+    color: #0F4C5C;
+    margin: 0 0 8pt 0;
+}
+.cover-rule {
+    width: 90pt;
+    height: 4pt;
+    background: #2C7A86;
+    margin: 14pt 0 16pt 0;
+}
+.cover-sub {
+    font-size: 15pt;
+    color: #46666B;
+    margin: 0 0 40pt 0;
+}
+.cover-meta {
+    width: 100%;
+    font-size: 9.5pt;
+    border: none;
+    margin-top: 20pt;
+}
+.cover-meta td {
+    border: none;
+    border-top: 0.6pt solid #D6E1E2;
+    padding: 6pt 4pt 6pt 0;
+}
+.cover-meta td:first-child {
+    width: 32%;
+    color: #6B8589;
+}
+.cover-note {
+    margin-top: 60pt;
+    font-size: 8.5pt;
+    color: #7A9094;
+}
+.toc-title {
+    font-family: "Calibri Light", Calibri, sans-serif;
+    font-size: 22pt;
+    color: #0F4C5C;
+    margin: 0 0 10pt 0;
+}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <p class="cover-kicker">Diagnóstico preventivo para Windows</p>
+  <p class="cover-title">Manual<br>de uso</p>
+  <div class="cover-rule"></div>
+  <p class="cover-sub">Instalación, operación, búsqueda, informes y solución de problemas</p>
+  <table class="cover-meta">
+    <tr><td>Documento</td><td>Manual de uso</td></tr>
+    <tr><td>Versión</td><td>1.0</td></tr>
+    <tr><td>Fecha</td><td>9 de noviembre de 2026</td></tr>
+    <tr><td>Estado</td><td>Local 0.5.3 · Servidor 1.0.3 · Cliente 1.0.2</td></tr>
+    <tr><td>Ámbito</td><td>Usuario final y personal de TI</td></tr>
+  </table>
+  <p class="cover-note">Documento de texto · Proyecto SaludPC</p>
+</div>
+
+<p class="toc-title">Contenido</p>
+<p>[[TOC]]</p>
+
+<h1>1. Qué es SaludPC</h1>
+<p>SaludPC es un programa de <strong>diagnóstico y prevención</strong> para equipos con Windows. Observa el consumo de CPU, memoria, disco y temperatura, aprende cómo se comporta cada equipo y avisa cuando algo se sale de lo normal. <strong>No repara nada</strong>: no cambia configuraciones, no borra archivos, no reinicia servicios y no toma decisiones por el usuario. Solo informa para que una persona decida.</p>
+<p>El programa funciona de dos formas:</p>
+<ul>
+<li><strong>Edición local:</strong> todo ocurre dentro del equipo. Los datos no salen a Internet.</li>
+<li><strong>Edición empresarial:</strong> un servidor central recibe reportes de varios equipos y</li>
+</ul>
+<p>el personal de TI los supervisa desde un panel web en la red interna.</p>
+<h1>2. Ediciones y cuándo usar cada una</h1>
+<table>
+<thead><tr><th>Edición</th><th>Para quién</th><th>Qué incluye</th><th>Dónde se guardan los datos</th></tr></thead>
+<tbody>
+<tr><td>Local</td><td>Un usuario, un equipo</td><td>Panel de estado, historial, aprendizaje estadístico, avisos</td><td>En el mismo equipo</td></tr>
+<tr><td>Empresarial</td><td>Un hospital, sede o área</td><td>Servidor central, panel de TI, cliente operario, búsqueda, informes</td><td>En el servidor de la organización</td></tr>
+</tbody></table>
+<p>Use la edición local cuando quiera cuidar un equipo sin infraestructura. Use la edición empresarial cuando TI necesite ver varios equipos desde un solo lugar.</p>
+<h1>3. Antes de instalar</h1>
+<ul>
+<li>Windows 10 u 11, preferiblemente 64 bits.</li>
+<li>Permisos de administrador para instalar. La instalación pide <strong>un solo UAC</strong>.</li>
+<li>En la edición empresarial, el servidor y los equipos deben estar en la misma red</li>
+</ul>
+<p>o tener acceso al puerto <strong>8443</strong> del servidor.</p>
+<ul>
+<li>Anote la <strong>IP del servidor</strong> (por ejemplo <code>192.168.100.4</code>) y el <strong>puerto</strong></li>
+</ul>
+<p>(por defecto <code>8443</code>). En el cliente se escriben separados: IP en un campo y puerto en otro.</p>
+<ul>
+<li>No hace falta crear cuentas, ni iniciar sesión en Internet, ni abrir un botón</li>
+</ul>
+<p>de «iniciar» después de instalar.</p>
+<h1>4. Edición local (usuario final)</h1>
+<h2>4.1 Instalación</h2>
+<p class="num"><span class="num-n">1.</span> Ejecute el instalador <code>SaludPC-Setup-0.5.3.exe</code>.</p>
+<p class="num"><span class="num-n">2.</span> Acepte el aviso de administrador (UAC) y siga el asistente.</p>
+<p class="num"><span class="num-n">3.</span> Al terminar, SaludPC queda funcionando y empieza a tomar muestras solo. No hay</p>
+<p>que abrir nada ni pulsar «iniciar».</p>
+<p class="num"><span class="num-n">4.</span> Si el equipo no tiene sensores o no desea leer temperatura, existe la variante</p>
+<p><strong>Lite</strong> (<code>SaludPC-Setup-0.5.3-Lite.exe</code>). Es la misma aplicación sin lectura de sensores.</p>
+<h2>4.2 Primera apertura y aprendizaje</h2>
+<p>Durante los primeros días el panel muestra <strong>APRENDIENDO</strong>. Eso es normal: el programa está reuniendo la línea base del equipo. Necesita <strong>300 muestras</strong> (una por minuto) repartidas en <strong>3 fechas locales distintas</strong>. Mientras tanto no emite un diagnóstico definitivo.</p>
+<p>Cuando termina el aprendizaje, el estado cambia a <strong>Normal</strong>, <strong>Atención</strong> o <strong>Acción</strong>. La línea base se actualiza al arrancar, al cambiar el día y cada 6 horas.</p>
+<h2>4.3 Estados del panel</h2>
+<table>
+<thead><tr><th>Estado</th><th>Significado</th><th>Qué hacer</th></tr></thead>
+<tbody>
+<tr><td>Aprendiendo</td><td>Todavía no hay historia suficiente</td><td>Esperar; el sistema ya está midiendo</td></tr>
+<tr><td>Normal</td><td>El comportamiento entra en lo esperado para ese equipo</td><td>Nada</td></tr>
+<tr><td>Atención</td><td>Hay una desviación moderada</td><td>Revisar el equipo cuando pueda</td></tr>
+<tr><td>Acción</td><td>Hay una desviación importante o sostenida</td><td>Revisar el equipo pronto</td></tr>
+</tbody></table>
+<p>Los umbrales no son fijos para todos: se calculan con el percentil 95 y 99 del propio equipo, con pisos y techos de seguridad. Por eso dos equipos distintos pueden reaccionar de forma distinta ante el mismo porcentaje de CPU.</p>
+<h2>4.4 Historial y filtros</h2>
+<p>El historial guarda <strong>90 días</strong> de detalle, con una muestra por minuto. Desde el panel se puede filtrar por fecha y por estado para ver qué pasó en un día o en una franja concreta. Los resúmenes diarios se conservan por más tiempo.</p>
+<h2>4.5 Consumo del agente</h2>
+<p>El propio programa mide su consumo. El panel muestra el promedio móvil de los últimos 5 minutos y lo actualiza cada 5 segundos. Si el consumo del agente baja de 0.95 % se considera «consumo bajo». Los picos solo se registran como episodio si duran <strong>5 minutos o más</strong>; si el servicio estuvo detenido más de 15 minutos, el episodio se descarta.</p>
+<h2>4.6 Ocultar la ventana al iniciar sesión</h2>
+<p>En el pie del panel está la casilla <strong>«No mostrar esta ventana al iniciar sesión»</strong>. Si la marca:</p>
+<ul>
+<li>la ventana no aparece al iniciar sesión;</li>
+<li>el programa <strong>sigue midiendo y enviando</strong> en segundo plano;</li>
+<li>puede abrirlo manualmente desde el acceso directo cuando quiera.</li>
+</ul>
+<p>Cerrar la ventana con la <strong>X</strong> la oculta, no detiene el monitoreo. Para detenerlo del todo use <strong>«Salir»</strong>.</p>
+<h2>4.7 Desinstalar</h2>
+<p>Use <strong>Configuración → Aplicaciones → SaludPC → Desinstalar</strong>, o el acceso directo de desinstalación del menú Inicio. La desinstalación no envía datos a Internet.</p>
+<h1>5. Edición empresarial: servidor central</h1>
+<h2>5.1 Requisitos del servidor</h2>
+<ul>
+<li>Un equipo Windows que quede encendido mientras se monitorea.</li>
+<li>IP fija o reservada en la red interna. Ejemplo: <code>192.168.100.4</code>.</li>
+<li>Puerto <strong>8443</strong> libre y permitido en el firewall de Windows.</li>
+<li>Espacio en disco suficiente para la base SQLite y los registros.</li>
+</ul>
+<h2>5.2 Instalación del servidor</h2>
+<p class="num"><span class="num-n">1.</span> Copie <code>SaludPC-Servidor-Central-1.0.3.exe</code> al equipo servidor.</p>
+<p class="num"><span class="num-n">2.</span> Doble clic, acepte el UAC y complete el asistente.</p>
+<p class="num"><span class="num-n">3.</span> El instalador cierra una instancia anterior, copia los archivos e inicia el</p>
+<p>servidor. Si no se inicia solo, abra <strong>SaludPC Servidor Central</strong> desde el escritorio o el menú Inicio.</p>
+<p class="num"><span class="num-n">4.</span> La consola muestra la base de datos, el registro y la dirección del panel.</p>
+<p class="num"><span class="num-n">5.</span> Abra en el navegador: <code>http://IP_DEL_SERVIDOR:8443/</code>.</p>
+<p>Rutas habituales:</p>
+<table>
+<thead><tr><th>Elemento</th><th>Ruta</th></tr></thead>
+<tbody>
+<tr><td>Programa</td><td><code>C:\Program Files\SaludPC Servidor\</code></td></tr>
+<tr><td>Base de datos</td><td><code>C:\ProgramData\SaludPC\servidor_central.db</code></td></tr>
+<tr><td>Registro</td><td><code>C:\ProgramData\SaludPC\servidor.log</code></td></tr>
+<tr><td>Panel</td><td><code>http://IP_DEL_SERVIDOR:8443/</code></td></tr>
+</tbody></table>
+<p>Si el servidor no abre el puerto, revise que no haya otra instancia en ejecución y que el firewall permita el puerto 8443.</p>
+<h2>5.3 Panel de TI</h2>
+<p>El panel muestra:</p>
+<ul>
+<li><strong>Tarjetas de resumen:</strong> total de equipos, normales, atención, requieren acción,</li>
+</ul>
+<p>en aprendizaje y sin reportar.</p>
+<ul>
+<li><strong>Tabla de equipos:</strong> ID, organización, sede, área, estado, última conexión y</li>
+</ul>
+<p>últimas métricas (CPU, RAM, disco y temperatura).</p>
+<ul>
+<li><strong>Actualización automática</strong> cada 30 segundos. Se pausa mientras usted escribe</li>
+</ul>
+<p>en el buscador o tiene abierto el cuadro de informes.</p>
+<h2>5.4 Buscar y filtrar</h2>
+<p>En la parte superior derecha están el <strong>buscador</strong>, el <strong>filtro por estado</strong> y el botón <strong>Actualizar</strong>:</p>
+<p class="num"><span class="num-n">1.</span> Escriba en el buscador el ID del equipo, la organización, la sede o el área.</p>
+<p>La búsqueda encuentra coincidencias parciales.</p>
+<p class="num"><span class="num-n">2.</span> Elija un estado en la lista: <strong>Todos</strong>, <strong>Normal</strong>, <strong>Atención</strong>,</p>
+<p><strong>Requiere acción</strong>, <strong>En aprendizaje</strong> o <strong>Sin reportar</strong>.</p>
+<p class="num"><span class="num-n">3.</span> Pulse <strong>Buscar</strong> o presione <strong>Enter</strong>.</p>
+<p class="num"><span class="num-n">4.</span> Pulse <strong>Limpiar</strong> para quitar la búsqueda y el filtro.</p>
+<p>Las tarjetas de resumen siempre muestran el panorama general; la tabla muestra solo los equipos que coinciden con la búsqueda y el filtro. El texto «Mostrando: N» indica cuántos equipos quedaron visibles.</p>
+<h2>5.5 Actualizar</h2>
+<p>El botón <strong>↻ Actualizar</strong> está a la derecha, junto al buscador. Fuerza una recarga inmediata del panel. Aunque no lo pulse, el panel se actualiza solo cada 30 segundos.</p>
+<h2>5.6 Detalle de un equipo</h2>
+<p>Pulse el ID del equipo en la tabla. El detalle muestra:</p>
+<ul>
+<li>organización, sede y área;</li>
+<li>fecha de inscripción y última conexión;</li>
+<li>estado actual y avance del aprendizaje (muestras y días);</li>
+<li>los últimos 50 reportes con estado, CPU, RAM, disco y temperatura.</li>
+</ul>
+<p>Desde esa pantalla puede generar el informe de ese equipo con un solo botón.</p>
+<h2>5.7 Eliminar un equipo</h2>
+<p>En la columna <strong>Acciones</strong> de la tabla, pulse el icono de papelera. El panel pide confirmación y elimina el equipo junto con sus reportes y avisos. Esta acción no se puede deshacer.</p>
+<p>Si el equipo vuelve a inscribirse, se crea de nuevo y empieza otra vez su aprendizaje.</p>
+<h2>5.8 Generar reportes</h2>
+<p>El botón <strong>📄 Generar reporte</strong> abre un cuadro con tres decisiones:</p>
+<p class="num"><span class="num-n">1.</span> <strong>¿Qué informe necesita?</strong></p>
+<p>- <strong>Todas las máquinas:</strong> un informe general del estado actual. - <strong>Un equipo específico:</strong> elija el equipo en la lista.</p>
+<p class="num"><span class="num-n">2.</span> <strong>Equipo:</strong> se habilita solo cuando eligió «Un equipo específico».</p>
+<p class="num"><span class="num-n">3.</span> <strong>Formato:</strong></p>
+<p>- <strong>Para imprimir o guardar como PDF:</strong> abre una página limpia. - <strong>CSV para Excel:</strong> descarga una hoja de cálculo.</p>
+<p>Pulse <strong>Generar</strong>. El informe se abre en una pestaña nueva.</p>
+<h3>5.8.1 Reporte de todas las máquinas</h3>
+<p>Incluye:</p>
+<ul>
+<li>fecha y hora de generación;</li>
+<li>resumen por estado;</li>
+<li>tabla con ID, organización, sede, área, estado, última conexión, CPU, RAM,</li>
+</ul>
+<p>disco y temperatura del último reporte.</p>
+<p>En la página del informe puede pulsar <strong>🖨 Imprimir / Guardar PDF</strong> o <strong>⬇ Descargar CSV</strong>.</p>
+<h3>5.8.2 Reporte de un equipo</h3>
+<p>Incluye:</p>
+<ul>
+<li>ficha del equipo (ID, organización, sede, área, inscripción, última conexión,</li>
+</ul>
+<p>estado actual y avance del aprendizaje);</p>
+<ul>
+<li>total de reportes, CPU media y máxima, RAM media y máxima, disco medio, primer</li>
+</ul>
+<p>y último reporte;</p>
+<ul>
+<li>historial cronológico con fecha UTC, fecha local, estado, CPU, RAM, disco y</li>
+</ul>
+<p>temperatura.</p>
+<p>La página muestra hasta los <strong>últimos 500 reportes</strong> para que sea imprimible. El <strong>CSV incluye el detalle completo</strong>, sin ese límite.</p>
+<h3>5.8.3 Formatos y uso práctico</h3>
+<table>
+<thead><tr><th>Formato</th><th>Para qué sirve</th><th>Cómo se usa</th></tr></thead>
+<tbody>
+<tr><td>HTML / impresión</td><td>Entregar un informe legible o firmarlo</td><td>Pulse Imprimir y elija «Guardar como PDF»</td></tr>
+<tr><td>CSV</td><td>Analizar en Excel, filtrar o archivizar</td><td>Se descarga y se abre con Excel</td></tr>
+</tbody></table>
+<p>El CSV usa punto y coma como separador y lleva una marca de codificación para que Excel reconozca los acentos. Si su Excel no separa las columnas automáticamente, use <strong>Datos → Texto en columnas</strong> y elija el punto y coma.</p>
+<h1>6. Edición empresarial: cliente operario</h1>
+<h2>6.1 Instalación</h2>
+<p class="num"><span class="num-n">1.</span> Copie <code>SaludPC-Cliente-Operario-1.0.2.exe</code> al equipo que se va a monitorear.</p>
+<p class="num"><span class="num-n">2.</span> Doble clic y acepte el UAC.</p>
+<p class="num"><span class="num-n">3.</span> Deje marcada la tarea <strong>«Iniciar SaludPC automáticamente al iniciar sesión»</strong>.</p>
+<p class="num"><span class="num-n">4.</span> Al terminar, el cliente se abre. Si no hay token, muestra la pantalla de</p>
+<p>inscripción.</p>
+<p>El instalador crea un acceso directo de inicio automático con el argumento <code>--auto</code>, que respeta la preferencia de ventana oculta.</p>
+<h2>6.2 Inscripción</h2>
+<p>Complete:</p>
+<ul>
+<li><strong>Organización:</strong> por ejemplo <code>HGO</code>.</li>
+<li><strong>Sede:</strong> por ejemplo <code>Imiem5645</code>.</li>
+<li><strong>Área:</strong> por ejemplo <code>UCIN</code>.</li>
+<li><strong>IP del servidor:</strong> por ejemplo <code>192.168.100.4</code>. No escriba el puerto aquí.</li>
+<li><strong>Puerto:</strong> por ejemplo <code>8443</code>.</li>
+</ul>
+<p>Pulse <strong>Inscribir equipo</strong>. Si todo está bien, el servidor devuelve un token y el cliente pasa al panel de aprendizaje <strong>sin cerrarse</strong>.</p>
+<p>Reglas importantes:</p>
+<ul>
+<li>Un equipo no se puede inscribir dos veces con el mismo ID. Si ya estaba</li>
+</ul>
+<p>inscrito, el servidor devuelve el token existente y el cliente lo recupera.</p>
+<ul>
+<li>El token se guarda en <code>C:\ProgramData\SaludPC\Cliente\token_equipo.json</code>.</li>
+<li>La preferencia de ventana se guarda en</li>
+</ul>
+<p><code>C:\ProgramData\SaludPC\Cliente\config_cliente.json</code>.</p>
+<h2>6.3 Panel de aprendizaje</h2>
+<p>Mientras el servidor no tenga <strong>300 muestras en 3 fechas locales</strong>, el panel muestra <strong>APRENDIENDO</strong> y el avance real, por ejemplo «1 de 300» y «1 de 3». No inventa un estado ni adelanta el diagnóstico. Cuando el aprendizaje se completa, el panel pasa a <strong>Normal</strong>, <strong>Atención</strong> o <strong>Acción</strong>.</p>
+<p>El cliente envía una muestra por minuto. La primera se envía de inmediato.</p>
+<h2>6.4 Inicio automático y ventana oculta</h2>
+<p>En el pie del panel está la casilla **«No mostrar esta ventana al iniciar sesión (el cliente sigue enviando reportes en segundo plano)»**.</p>
+<ul>
+<li>Si la marca, al iniciar sesión el cliente arranca oculto y sigue enviando.</li>
+<li>Si la desmarca, la ventana aparece al iniciar sesión.</li>
+<li>El acceso directo del escritorio y el del menú Inicio **siempre muestran la</li>
+</ul>
+<p>ventana** cuando se abren a mano.</p>
+<h2>6.5 Cerrar, ocultar y salir</h2>
+<ul>
+<li><strong>X de la ventana:</strong> oculta la ventana; el cliente sigue enviando. La primera</li>
+</ul>
+<p>vez avisa que SaludPC continúa activo.</p>
+<ul>
+<li><strong>Ocultar:</strong> hace lo mismo, sin diálogo.</li>
+<li><strong>Salir:</strong> pide confirmación y <strong>detiene el monitoreo</strong>.</li>
+</ul>
+<p>Si el equipo se reinicia y el inicio automático está activo, el cliente vuelve a arrancar solo.</p>
+<h2>6.6 Reabrir cuando ya está oculto</h2>
+<p>El cliente permite <strong>una sola instancia</strong>. Si la ventana está oculta y usted abre de nuevo el acceso directo:</p>
+<p class="num"><span class="num-n">1.</span> La segunda apertura no crea otro cliente.</p>
+<p class="num"><span class="num-n">2.</span> Envía la orden <code>SHOW</code> a la instancia que ya está trabajando.</p>
+<p class="num"><span class="num-n">3.</span> La ventana existente se muestra.</p>
+<p class="num"><span class="num-n">4.</span> La segunda apertura termina sola.</p>
+<p>No se duplican reportes ni se abren dos ventanas.</p>
+<h2>6.7 Equipo ya inscrito o reinstalación</h2>
+<p>Si reinstala el cliente y el equipo ya estaba inscrito, la inscripción devuelve el token existente. El cliente lo guarda y continúa. No es necesario borrar el equipo en el servidor ni crear un ID nuevo, salvo que quiera empezar de cero.</p>
+<h1>7. Privacidad y seguridad</h1>
+<h2>7.1 Qué datos se envían</h2>
+<p>Solo se envían métricas técnicas de una lista cerrada:</p>
+<ul>
+<li>ID del equipo, organización, sede y área;</li>
+<li>CPU, memoria, disco y temperatura;</li>
+<li>estado del agente y fecha del reporte.</li>
+</ul>
+<p><strong>No</strong> se envían nombres de pacientes, documentos, historias clínicas, nombres de procesos, archivos personales ni el contenido de la pantalla.</p>
+<h2>7.2 Token y firma HMAC</h2>
+<p>Cada equipo recibe un <strong>token único</strong> al inscribirse. Cada reporte se firma con <strong>HMAC-SHA256</strong> usando ese token. El servidor rechaza los reportes con firma inválida. Esto protege la integridad y la autenticidad del reporte.</p>
+<h2>7.3 HTTP y HTTPS</h2>
+<p>La versión 1.0.3 del servidor usa <strong>HTTP</strong> en el puerto 8443. HMAC evita que un reporte sea alterado, pero <strong>no cifra</strong> el tráfico. En una red local, alguien con acceso podría leer las métricas y el token.</p>
+<p>Opciones para proteger la conexión, de menor a mayor esfuerzo:</p>
+<p class="num"><span class="num-n">1.</span> <strong>Certificado autofirmado con pinning</strong> (recomendado para el piloto): el</p>
+<p>servidor usa un certificado propio y el cliente valida su huella.</p>
+<p class="num"><span class="num-n">2.</span> <strong>CA interna del hospital:</strong> el servidor recibe un certificado de la CA de la</p>
+<p>organización y los equipos confían en ella.</p>
+<p class="num"><span class="num-n">3.</span> <strong>Proxy inverso Caddy o nginx:</strong> el servidor sigue en HTTP local y el proxy</p>
+<p>termina TLS.</p>
+<p class="num"><span class="num-n">4.</span> <strong>Let's Encrypt:</strong> solo si el servidor tiene un nombre DNS público.</p>
+<p class="num"><span class="num-n">5.</span> <strong>mTLS:</strong> certificado de cliente, además del token.</p>
+<p class="num"><span class="num-n">6.</span> <strong>VPN o red segmentada:</strong> complemento de las anteriores.</p>
+<p>Mientras HTTPS no esté implementado, mantenga el servidor en una red interna de confianza, restrinja el acceso al puerto 8443 y no lo exponga a Internet.</p>
+<h2>7.4 Recomendaciones para el piloto</h2>
+<ul>
+<li>Instale el servidor en un equipo con IP fija.</li>
+<li>Permita el puerto 8443 solo en la subred de los equipos monitoreados.</li>
+<li>Use un token por equipo; no comparta tokens.</li>
+<li>Revise el registro <code>servidor.log</code> si algo no llega.</li>
+<li>No publique el panel fuera de la red interna.</li>
+</ul>
+<h1>8. Solución de problemas</h1>
+<table>
+<thead><tr><th>Síntoma</th><th>Causa probable</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>El cliente no inscribe</td><td>IP o puerto incorrectos, servidor apagado o firewall</td><td>Verifique IP y puerto, encienda el servidor y permita 8443</td></tr>
+<tr><td>«El equipo ya está inscrito»</td><td>El ID ya existe en el servidor</td><td>El cliente recupera el token solo; si no, revise el ID</td></tr>
+<tr><td>El panel no muestra un equipo</td><td>Aún no llegó el primer reporte o el panel tiene datos viejos</td><td>Espere un minuto o pulse Actualizar</td></tr>
+<tr><td>El equipo sigue en «Aprendiendo»</td><td>Faltan muestras o fechas locales</td><td>Espere a completar 300 muestras en 3 días</td></tr>
+<tr><td>No aparece la ventana al iniciar sesión</td><td>La casilla de ocultar está marcada</td><td>Abra el acceso directo del escritorio o del menú Inicio</td></tr>
+<tr><td>La segunda apertura no muestra nada</td><td>Ya hay una instancia y el socket de control no responde</td><td>Cierre el proceso y vuelva a abrir; revise el puerto 8457</td></tr>
+<tr><td>El servidor no arranca</td><td>Otra instancia ocupa el puerto 8443</td><td>Cierre la instancia anterior o cambie el puerto</td></tr>
+<tr><td>El CSV se ve en una sola columna</td><td>Configuración regional de Excel</td><td>Use Datos → Texto en columnas con separador punto y coma</td></tr>
+<tr><td>El panel no tiene buscador ni informes</td><td>Está abierto con una versión anterior</td><td>Actualice el servidor a 1.0.3 y recargue con Ctrl+F5</td></tr>
+<tr><td>El informe no se abre</td><td>El navegador bloqueó la ventana emergente</td><td>Permita ventanas emergentes para la dirección del servidor</td></tr>
+</tbody></table>
+<h1>9. Preguntas frecuentes</h1>
+<p><strong>¿SaludPC repara el equipo?</strong> No. Solo diagnostica y avisa. Las decisiones y las reparaciones las hace una persona.</p>
+<p><strong>¿Envía datos a Internet?</strong> La edición local no envía nada a Internet. La edición empresarial envía solo métricas técnicas al servidor de la organización.</p>
+<p><strong>¿Puedo ocultar la ventana y seguir monitoreando?</strong> Sí. Marque la casilla de ocultar al iniciar sesión. El cliente sigue enviando. La X también oculta; «Salir» detiene el monitoreo.</p>
+<p><strong>¿Cuánto tarda el aprendizaje?</strong> Como mínimo 3 días locales y 300 muestras. Con una muestra por minuto, se cumplen las 300 muestras en unas 5 horas, pero hacen falta 3 fechas locales distintas.</p>
+<p><strong>¿Qué pasa si el equipo se apaga?</strong> El cliente se detiene. Al iniciar sesión vuelve a arrancar solo si el inicio automático está activo. Los reportes que faltan no se inventan.</p>
+<p><strong>¿Puedo generar un informe sin imprimir?</strong> Sí. Elija el formato CSV para Excel o guarde la página como PDF desde el navegador.</p>
+<p><strong>¿El informe general incluye todos los equipos aunque esté filtrando?</strong> El informe general incluye todos los equipos inscritos. El filtro de la tabla solo afecta a lo que ve en pantalla, no al contenido del informe.</p>
+<p><strong>¿Puedo eliminar un equipo y volver a inscribirlo?</strong> Sí. Al eliminarlo se borran sus reportes y avisos. Al inscribirlo de nuevo empieza un aprendizaje nuevo.</p>
+<p><strong>¿Qué diferencia hay entre la edición local y la empresarial?</strong> La local guarda todo en el equipo y usa un baseline estadístico. La empresarial centraliza los reportes en un servidor y usa un conteo de aprendizaje de 300 muestras y 3 días, con umbrales fijos en el cliente.</p>
+<h1>10. Glosario</h1>
+<table>
+<thead><tr><th>Término</th><th>Significado</th></tr></thead>
+<tbody>
+<tr><td>Aprendizaje</td><td>Periodo inicial en el que el programa reúne muestras antes de diagnosticar</td></tr>
+<tr><td>Baseline</td><td>Comportamiento habitual del equipo, calculado con su propia historia</td></tr>
+<tr><td>Muestra</td><td>Una lectura de CPU, RAM, disco y temperatura</td></tr>
+<tr><td>Token</td><td>Credencial única de un equipo para autenticarse ante el servidor</td></tr>
+<tr><td>HMAC-SHA256</td><td>Firma que demuestra que un reporte no fue alterado</td></tr>
+<tr><td>p95 / p99</td><td>Percentiles usados para separar lo normal de lo anómalo</td></tr>
+<tr><td>Reporte</td><td>Conjunto de métricas que el cliente envía al servidor</td></tr>
+<tr><td>Informe</td><td>Documento generado por el servidor para leer o archivar</td></tr>
+</tbody></table>
+<h1>11. Anexos</h1>
+<h2>11.1 Rutas, puertos y archivos</h2>
+<table>
+<thead><tr><th>Elemento</th><th>Valor</th></tr></thead>
+<tbody>
+<tr><td>Puerto del servidor</td><td>8443 (HTTP en la versión 1.0.3)</td></tr>
+<tr><td>Base del servidor</td><td><code>C:\ProgramData\SaludPC\servidor_central.db</code></td></tr>
+<tr><td>Registro del servidor</td><td><code>C:\ProgramData\SaludPC\servidor.log</code></td></tr>
+<tr><td>Configuración del cliente</td><td><code>C:\ProgramData\SaludPC\Cliente\config_cliente.json</code></td></tr>
+<tr><td>Token del cliente</td><td><code>C:\ProgramData\SaludPC\Cliente\token_equipo.json</code></td></tr>
+<tr><td>Socket de control del cliente</td><td><code>127.0.0.1:8457</code></td></tr>
+<tr><td>Muestras para aprender</td><td>300</td></tr>
+<tr><td>Fechas locales para aprender</td><td>3</td></tr>
+<tr><td>Intervalo de envío</td><td>60 segundos</td></tr>
+<tr><td>Detalle local</td><td>90 días</td></tr>
+<tr><td>Actualización del panel</td><td>30 segundos</td></tr>
+</tbody></table>
+<h2>11.2 API para el personal de TI</h2>
+<table>
+<thead><tr><th>Ruta</th><th>Método</th><th>Uso</th></tr></thead>
+<tbody>
+<tr><td><code>/</code></td><td>GET</td><td>Panel de TI</td></tr>
+<tr><td><code>/equipos</code></td><td>GET</td><td>Lista de equipos en JSON; acepta <code>buscar</code> y <code>estado</code></td></tr>
+<tr><td><code>/progreso?id=...&amp;token=...</code></td><td>GET</td><td>Avance de aprendizaje de un equipo</td></tr>
+<tr><td><code>/detalle?id=...</code></td><td>GET</td><td>Detalle de un equipo</td></tr>
+<tr><td><code>/informe?tipo=general</code></td><td>GET</td><td>Informe general imprimible</td></tr>
+<tr><td><code>/informe?tipo=general&amp;formato=csv</code></td><td>GET</td><td>Informe general en CSV</td></tr>
+<tr><td><code>/informe?tipo=equipo&amp;id=...</code></td><td>GET</td><td>Informe de un equipo imprimible</td></tr>
+<tr><td><code>/informe?tipo=equipo&amp;id=...&amp;formato=csv</code></td><td>GET</td><td>Informe de un equipo en CSV</td></tr>
+<tr><td><code>/inscribir</code></td><td>POST</td><td>Inscripción de un equipo</td></tr>
+<tr><td><code>/reporte</code></td><td>POST</td><td>Envío de un reporte firmado</td></tr>
+<tr><td><code>/aviso</code></td><td>POST</td><td>Registro de un aviso</td></tr>
+<tr><td><code>/eliminar</code></td><td>DELETE</td><td>Eliminación de un equipo</td></tr>
+</tbody></table>
+<h2>11.3 Versiones de referencia</h2>
+<table>
+<thead><tr><th>Componente</th><th>Versión de este manual</th></tr></thead>
+<tbody>
+<tr><td>Edición local</td><td>0.5.3</td></tr>
+<tr><td>Servidor central</td><td>1.0.3</td></tr>
+<tr><td>Cliente operario</td><td>1.0.2</td></tr>
+</tbody></table>
+<p>El cliente 1.0.2 es compatible con el servidor 1.0.3: el protocolo de inscripción, reportes y progreso no cambió. Las novedades de la versión 1.0.3 son del panel: búsqueda, filtro por estado, botón de actualización a la derecha y generación de informes generales y por equipo.</p>
+<hr>
+<p><strong>Fin del manual.</strong> Para detalles técnicos, historial de cambios y decisiones de diseño, consulte <code>BITACORA.md</code> y <code>BITACORA_SaludPC.pdf</code>.</p>
+
+</body>
+</html>

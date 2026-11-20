@@ -1,0 +1,21 @@
+PRUEBA DEL MODELO (datos simulados, carpeta temporal)
+Carpeta: C:\Users\INFO\AppData\Local\Temp\saludpc_prueba_modelo
+
+Aprendiendo: False
+Dias con datos: 3
+Muestras distintas: 540
+Metricas en el baseline: cpu_load, cpu_temp, disk_used_pct, ram_load
+
+CPU limite amarillo: 85.0 %
+CPU limite rojo: 98.0 %
+CPU mediana: 27.25 %
+CPU p95: 29.5 %
+
+Estado con CPU 96 %: atencion
+Mensaje: El procesador está trabajando más de lo habitual. Cerrá los programas que no estés usando y fijate si mejora en unos minutos.
+
+Estado con CPU 99 %: accion
+Mensaje: El procesador está trabajando más de lo habitual. Cerrá los programas que no estés usando y fijate si mejora en unos minutos.
+
+Estado con CPU 25 %: ok
+Mensaje: Todo se ve dentro de lo normal para tu equipo.

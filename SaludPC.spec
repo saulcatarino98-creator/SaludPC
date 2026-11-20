@@ -1,7 +1,9 @@
 # -*- mode: python ; coding: utf-8 -*-
 from PyInstaller.utils.hooks import collect_all
 
-datas = []
+datas = [
+    ('empaquetado/sensores/LibreHardwareMonitorLib.dll', 'LibreHardwareMonitorLib.dll'),
+]
 binaries = []
 hiddenimports = ['clr']
 tmp_ret = collect_all('pythonnet')

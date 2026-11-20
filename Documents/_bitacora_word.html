@@ -1,0 +1,1280 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Bitacora de SaludPC</title>
+<style>
+@page {
+    size: A4;
+    margin: 2.2cm 2.1cm 2.1cm 2.1cm;
+}
+body {
+    font-family: Calibri, Carlito, sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.38;
+    color: #23302F;
+    margin: 0;
+}
+p { margin: 0 0 8pt 0; text-align: justify; }
+h1 {
+    font-family: "Calibri Light", Calibri, sans-serif;
+    font-size: 17pt;
+    color: #0F4C5C;
+    margin: 18pt 0 7pt 0;
+    padding-bottom: 3pt;
+    border-bottom: 1.2pt solid #C9DCDD;
+    page-break-after: avoid;
+    mso-outline-level: 1;
+}
+h2 {
+    font-family: "Calibri Light", Calibri, sans-serif;
+    font-size: 13pt;
+    color: #17606F;
+    margin: 13pt 0 5pt 0;
+    page-break-after: avoid;
+    mso-outline-level: 2;
+}
+h3 {
+    font-family: Calibri, sans-serif;
+    font-size: 11pt;
+    color: #2B4A50;
+    margin: 11pt 0 4pt 0;
+    page-break-after: avoid;
+    mso-outline-level: 3;
+}
+strong { color: #17383F; }
+code {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 9pt;
+    background: #F1F4F4;
+    color: #1E4A54;
+    padding: 0 2pt;
+}
+pre {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 9pt;
+    background: #F4F6F6;
+    border-left: 3pt solid #7FAEB3;
+    padding: 6pt 9pt;
+    margin: 7pt 0 10pt 0;
+    white-space: pre-wrap;
+}
+pre code { background: transparent; padding: 0; }
+blockquote {
+    margin: 8pt 0;
+    padding: 5pt 10pt;
+    border-left: 3pt solid #7FAEB3;
+    background: #F4F8F8;
+    color: #35575C;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 7pt 0 12pt 0;
+    font-size: 9pt;
+    page-break-inside: avoid;
+    mso-table-lspace: 0pt;
+    mso-table-rspace: 0pt;
+}
+th {
+    background: #E4F0F1;
+    color: #123E47;
+    font-weight: bold;
+    text-align: left;
+    border: 0.75pt solid #B9CDD0;
+    padding: 4pt 5pt;
+    vertical-align: top;
+}
+td {
+    border: 0.75pt solid #C9D7D9;
+    padding: 3.5pt 5pt;
+    vertical-align: top;
+}
+tr { page-break-inside: avoid; }
+ul, ol { margin: 3pt 0 9pt 16pt; padding: 0; }
+li { margin: 0 0 3.5pt 0; text-align: justify; }
+p.num {
+    margin: 0 0 5pt 0;
+    padding-left: 20pt;
+    text-indent: -20pt;
+    text-align: justify;
+}
+.num-n { font-weight: bold; color: #17606F; }
+hr {
+    border: none;
+    border-top: 0.75pt solid #D6E1E2;
+    margin: 14pt 0;
+}
+a { color: #17606F; text-decoration: none; }
+.pagebreak { page-break-before: always; height: 0; line-height: 0; font-size: 1pt; }
+li.sub { margin-left: 18pt; list-style-type: circle; }
+
+/* Portada */
+.cover { margin-top: 4.2cm; }
+.cover-kicker {
+    font-size: 9pt;
+    letter-spacing: 2.2pt;
+    text-transform: uppercase;
+    color: #2C7A86;
+    margin-bottom: 14pt;
+}
+.cover-title {
+    font-family: "Calibri Light", Calibri, sans-serif;
+    font-size: 40pt;
+    line-height: 1.02;
+    color: #0F4C5C;
+    margin: 0 0 8pt 0;
+}
+.cover-rule {
+    width: 90pt;
+    height: 4pt;
+    background: #2C7A86;
+    margin: 14pt 0 16pt 0;
+}
+.cover-sub {
+    font-size: 15pt;
+    color: #46666B;
+    margin: 0 0 40pt 0;
+}
+.cover-meta {
+    width: 100%;
+    font-size: 9.5pt;
+    border: none;
+    margin-top: 20pt;
+}
+.cover-meta td {
+    border: none;
+    border-top: 0.6pt solid #D6E1E2;
+    padding: 6pt 4pt 6pt 0;
+}
+.cover-meta td:first-child {
+    width: 32%;
+    color: #6B8589;
+}
+.cover-note {
+    margin-top: 60pt;
+    font-size: 8.5pt;
+    color: #7A9094;
+}
+.toc-title {
+    font-family: "Calibri Light", Calibri, sans-serif;
+    font-size: 22pt;
+    color: #0F4C5C;
+    margin: 0 0 10pt 0;
+}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <p class="cover-kicker">Salud preventiva para Windows</p>
+  <p class="cover-title">Bitácora<br>SaludPC</p>
+  <div class="cover-rule"></div>
+  <p class="cover-sub">Historia, versiones, pruebas y próximos pasos</p>
+  <table class="cover-meta">
+    <tr><td>Documento</td><td>Bitácora del proyecto</td></tr>
+    <tr><td>Versión</td><td>1.5</td></tr>
+    <tr><td>Fecha</td><td>9 de noviembre de 2026</td></tr>
+    <tr><td>Estado</td><td>0.5.3 instalada; Enterprise 1.0.3 probada y pendiente de instalar</td></tr>
+    <tr><td>Ámbito</td><td>Edición para usuario final y edición empresarial</td></tr>
+  </table>
+  <p class="cover-note">Documento de texto · Proyecto SaludPC</p>
+</div>
+
+<p class="toc-title">Contenido</p>
+<p>[[TOC]]</p>
+
+<hr>
+<h1>1. Para qué sirve este documento</h1>
+<p>Esta bitácora cuenta, en orden, qué se construyó, qué se probó y qué se aprendió en cada etapa de SaludPC. No es un manual de uso ni una lista de tareas: es el registro de por qué el programa llegó a ser como es, qué funcionaba en cada versión, qué no funcionaba y qué queda por delante.</p>
+<p>La carpeta del proyecto <strong>no es un repositorio Git</strong>, así que no existe un historial de commits. Esta reconstrucción se basa en los archivos que quedaron en el disco, sus fechas, los documentos técnicos y las pruebas que se ejecutaron. Cuando algo no se pudo comprobar, se dice explícitamente.</p>
+<hr>
+<h1>2. Resumen en una página</h1>
+<p>SaludPC nació como un conjunto de scripts que leían los sensores de la PC y guardaban un CSV. Con el tiempo se convirtió en un producto instalable: un servicio que toma una muestra por minuto, aprende qué es normal en ese equipo, avisa cuando algo se sale de lo habitual y muestra un panel e historial en lenguaje simple.</p>
+<p>Las versiones fueron estas:</p>
+<table>
+<thead><tr><th>Etapa</th><th>Qué era</th><th>Lo más importante</th></tr></thead>
+<tbody>
+<tr><td><strong>Alpha inicial</strong> (fines de octubre)</td><td>Scripts de Python y CSV</td><td>Se comprobó que era posible leer hardware real y compararlo con un baseline</td></tr>
+<tr><td><strong>0.4.0</strong></td><td>Primera versión instalable</td><td>Instalador, servicio, tareas automáticas, datos en <code>ProgramData</code></td></tr>
+<tr><td><strong>0.5.0</strong></td><td>Versión cuidada</td><td>Panel nuevo, historial, reporte semanal, tema automático, aviso flotante</td></tr>
+<tr><td><strong>0.5.1</strong></td><td>Corrección del aviso</td><td>El aviso lo dispara el servicio, no el panel; modo de prueba; texto de aprendizaje</td></tr>
+<tr><td><strong>0.5.2</strong></td><td>Contador de días confiable</td><td>El baseline se refresca al arrancar, al cambiar el día y cada 6 horas; el aprendizaje termina solo</td></tr>
+<tr><td><strong>0.5.3</strong></td><td>Consumo, filtros y picos</td><td>El agente muestra su consumo, el historial se filtra por categoría y los picos de 5 minutos o más quedan como episodios</td></tr>
+<tr><td><strong>0.5.3 Lite</strong></td><td>Versión de bajos recursos</td><td>Sin .NET Framework, sin sensores de temperatura, solo CPU/RAM/disco; ejecutable aparte <code>SaludPC-Lite.exe</code></td></tr>
+<tr><td><strong>Enterprise 1.0.0</strong></td><td>Servidor central y cliente operario</td><td>Servidor central con panel de TI, cliente con interfaz gráfica para inscripción y envío de reportes; lista cerrada de campos técnicos</td></tr>
+<tr><td><strong>Enterprise 1.0.1</strong></td><td>Panel de aprendizaje en el operario</td><td>El cliente ya no se cierra al inscribir; muestra el avance real de aprendizaje (muestras y días) y confirma que el sistema está funcionando</td></tr>
+<tr><td><strong>Enterprise 1.0.2</strong></td><td>APRENDIENDO, inicio oculto e instancia única</td><td>El panel del cliente muestra APRENDIENDO hasta completar la línea base; se puede ocultar la ventana al iniciar sesión sin detener el envío; una segunda apertura reabre la instancia existente</td></tr>
+<tr><td><strong>Enterprise 1.0.3</strong></td><td>Búsqueda, filtros e informes en el panel de TI</td><td>Buscador por ID u organización/sede/área, filtro por estado, botón Actualizar a la derecha y generación de informes generales y por equipo en HTML o CSV; incluye manual de uso</td></tr>
+</tbody></table>
+<p>El gran tropiezo de la 0.5.0 fue el <strong>aviso flotante que no aparecía</strong>. No era un fallo de instalación: el equipo todavía estaba en aprendizaje (1 de 3 días, 194 de 300 muestras) y, además, el aviso solo se mostraba si el panel estaba abierto y veía el empeoramiento en ese momento. La 0.5.1 corrigió lo segundo. Lo primero se resuelve solo con días de uso normal.</p>
+<p>Hoy la edición local está funcional e instalada (0.5.3). El aprendizaje terminó solo el 5 de noviembre: el baseline llegó a 3 días y 1.127 muestras, y el panel muestra «Todo se ve dentro de lo normal para tu equipo». La cabecera informa el consumo del agente y el historial se puede filtrar por energía, carga y térmicas. Existe una versión lite (sin .NET, sin sensores de temperatura) para equipos de bajos recursos. La edición empresarial está implementada y probada: servidor central con panel de TI y cliente operario con interfaz gráfica para inscripción y envío de reportes firmados con HMAC-SHA256.</p>
+<hr>
+<h1>3. Línea de tiempo</h1>
+<table>
+<thead><tr><th>Fecha aproximada</th><th>Hecho</th></tr></thead>
+<tbody>
+<tr><td>26 de octubre de 2026</td><td>Primeros scripts: colector, cerebro, vigilante, CSV de hardware</td></tr>
+<tr><td>29 de octubre de 2026</td><td>Respaldo de la alpha; separación de métricas y baseline</td></tr>
+<tr><td>30 de octubre de 2026</td><td>Primer empaquetado con PyInstaller (<code>app.spec</code>, carpeta <code>build</code>)</td></tr>
+<tr><td>3 de noviembre de 2026</td><td>Trabajo grande: 0.4.0, 0.5.0, 0.5.1, documentación y diseño empresarial</td></tr>
+<tr><td>4 de noviembre de 2026</td><td>0.5.2: arreglo del contador de días; instalación sobre la 0.5.0 y primeras 2 fechas locales</td></tr>
+<tr><td>5 de noviembre de 2026</td><td>El aprendizaje termina solo a las 00:00:44; primer estado «Normal» con datos reales</td></tr>
+<tr><td>5 de noviembre de 2026</td><td>0.5.3: consumo del agente, filtros del historial y episodios de pico; instalación validada</td></tr>
+<tr><td>7 de noviembre de 2026</td><td>Versión lite compilada (sin .NET, sin sensores); casilla «No mostrar ventana al iniciar sesión» agregada al panel</td></tr>
+<tr><td>8 de noviembre de 2026</td><td>Edición empresarial implementada y probada: servidor central con panel de TI y cliente operario con interfaz gráfica</td></tr>
+<tr><td>9 de noviembre de 2026</td><td>Enterprise 1.0.1: el cliente conserva la ventana al inscribir y muestra un panel de aprendizaje con el avance real del servidor</td></tr>
+<tr><td>9 de noviembre de 2026</td><td>Enterprise 1.0.2: APRENDIENDO, inicio oculto e instancia única; Enterprise 1.0.3: búsqueda, filtros, informes generales y por equipo; manual de uso</td></tr>
+</tbody></table>
+<p>Las fechas son las que dejaron los archivos. Algunas decisiones pudieron tomarse antes o después de la fecha visible; lo que importa es el orden.</p>
+<hr>
+<h1>4. Etapa alpha: la prueba de concepto</h1>
+<h2>4.1 Qué se construyó</h2>
+<p>Los archivos de esa época siguen en <code>respaldo_alpha_20261029</code>:</p>
+<ul>
+<li><code>colector.py</code>: abría LibreHardwareMonitor y leía sensores de CPU, memoria,</li>
+</ul>
+<p>disco y temperatura.</p>
+<ul>
+<li><code>cerebro.py</code>: calculaba un baseline, es decir, un retrato de lo que era</li>
+</ul>
+<p>normal para ese equipo.</p>
+<ul>
+<li><code>vigilante.py</code>: comparaba las lecturas con el baseline y decidía si había</li>
+</ul>
+<p>algo raro.</p>
+<ul>
+<li><code>historial_hardware.csv</code>: guardaba las lecturas en un archivo de texto.</li>
+<li><code>ver_estado.py</code> y <code>ver_estado.bat</code>: mostraban por consola si el programa</li>
+</ul>
+<p>estaba funcionando y cuándo fue la última muestra.</p>
+<p>En esa etapa también apareció <code>metricas.py</code>, que con el tiempo se convirtió en el único lugar donde se definen las métricas válidas. Esa decisión evitó que cada módulo inventara su propia lista de sensores.</p>
+<h2>4.2 Qué funcionaba</h2>
+<ul>
+<li>Leer hardware real, incluida la temperatura, mediante LibreHardwareMonitor.</li>
+<li>Guardar un histórico en CSV.</li>
+<li>Calcular un baseline y comparar contra él.</li>
+<li>Ejecutar todo a mano, desde consola, sin instalar nada.</li>
+</ul>
+<h2>4.3 Qué no funcionaba</h2>
+<ul>
+<li><strong>No había producto</strong>: había que abrir una consola y ejecutar scripts.</li>
+<li><strong>No había instalación</strong>: dependía de tener Python y las librerías instaladas.</li>
+<li><strong>No había arranque automático</strong>: si el usuario no ejecutaba nada, no había</li>
+</ul>
+<p>datos.</p>
+<ul>
+<li><strong>No había panel</strong>: todo se leía por consola o abriendo el CSV.</li>
+<li><strong>No había historial interpretado</strong>: el CSV no explicaba suspensiones,</li>
+</ul>
+<p>apagados ni cambios de estado.</p>
+<ul>
+<li><strong>No había aprendizaje sólido</strong>: el baseline era un archivo vacío</li>
+</ul>
+<p>(<code>"version": 1</code>, <code>"metricas": {}</code>) y no resistía reinicios ni cambios de versión. El código actual rechaza ese formato y genera uno nuevo (<code>"version": 2</code>), lo que obliga a volver a aprender.</p>
+<ul>
+<li><strong>No había alertas útiles</strong>: sin baseline consolidado, cualquier comparación</li>
+</ul>
+<p>podía dar falsos positivos.</p>
+<p>La alpha cumplió su función: demostró que la idea era viable. Pero no era algo que se pudiera entregar a una persona sin conocimientos técnicos.</p>
+<hr>
+<h1>5. Versión 0.4.0: la primera instalable</h1>
+<h2>5.1 Qué se hizo</h2>
+<p>Se empaquetó con PyInstaller en modo <code>onedir</code> y ventana sin consola, y se armó un instalador con Inno Setup. El objetivo era que la instalación fuera «siguiente, siguiente, siguiente», con un solo pedido de permisos de administrador.</p>
+<p>La instalación dejó este esquema:</p>
+<ul>
+<li>Programa en <code>C:\Program Files\SaludPC</code>.</li>
+<li>Datos en <code>C:\ProgramData\SaludPC</code>, con permisos para que el usuario pueda</li>
+</ul>
+<p>escribir sin ser administrador.</p>
+<ul>
+<li>Tres tareas de Windows:</li>
+<li class="sub"><strong>SaludPC Servicio</strong>: arranca al iniciar sesión, con permisos elevados.</li>
+<li class="sub"><strong>SaludPC Panel</strong>: arranca al iniciar sesión, unos 20 segundos después.</li>
+<li class="sub"><strong>SaludPC Vigia</strong>: arranca al iniciar sesión y se repite cada 5 minutos;</li>
+</ul>
+<p>reinicia el servicio si dejó de guardar datos.</p>
+<p>El panel era la interfaz clásica de Tkinter. El aviso al usuario era una notificación básica.</p>
+<h2>5.2 Qué funcionaba</h2>
+<ul>
+<li>Instalar sin conocimientos técnicos y con un solo UAC.</li>
+<li>Arrancar solo al iniciar sesión, sin botón «iniciar».</li>
+<li>Tomar una muestra por minuto y guardarla en SQLite.</li>
+<li>Conservar 90 días de detalle y resumir los días viejos.</li>
+<li>Mantener los datos en el equipo, sin enviar nada a Internet.</li>
+<li>Abrir el panel automáticamente.</li>
+</ul>
+<h2>5.3 Qué no funcionaba</h2>
+<ul>
+<li><strong>La interfaz se veía anticuada</strong> y no acompañaba el tema claro u oscuro de</li>
+</ul>
+<p>Windows.</p>
+<ul>
+<li><strong>No había pestaña de historial</strong>: el usuario veía el estado actual, pero no</li>
+</ul>
+<p>qué había pasado.</p>
+<ul>
+<li><strong>No se distinguían suspensiones y apagados</strong>: un hueco de horas parecía un</li>
+</ul>
+<p>fallo del programa.</p>
+<ul>
+<li><strong>No había reporte semanal</strong>: no había forma de mirar tendencias sin abrir</li>
+</ul>
+<p>la base.</p>
+<ul>
+<li><strong>El aviso era básico y poco confiable</strong>: una notificación de Windows puede</li>
+</ul>
+<p>quedar silenciada o agrupada.</p>
+<ul>
+<li><strong>El panel podía cerrarse solo a los 3 días</strong>: las tareas de Windows tienen</li>
+</ul>
+<p>un límite de ejecución predeterminado.</p>
+<ul>
+<li><strong>No se podían hacer pruebas en paralelo</strong>: el mutex del servicio era fijo y</li>
+</ul>
+<p>bloqueaba una segunda instancia.</p>
+<ul>
+<li><strong>La temperatura dependía de un controlador</strong>: sin el componente firmado,</li>
+</ul>
+<p>algunos sensores no estaban disponibles.</p>
+<p>La 0.4.0 demostró que el producto se podía instalar y dejar funcionando solo. El problema ya no era la viabilidad, sino la experiencia de uso.</p>
+<hr>
+<h1>6. Versión 0.5.0: el salto de calidad</h1>
+<h2>6.1 Qué se hizo</h2>
+<p>Se migró la interfaz a CustomTkinter 6.0.0 y Pillow 13.0.0. El panel pasó a tener dos pestañas y un diseño de tarjetas:</p>
+<ul>
+<li><strong>Ahora</strong>: estado general (Normal, Atención o Revisar) y una tarjeta por</li>
+</ul>
+<p>métrica, con valor actual, barra de referencia y límite normal del equipo.</p>
+<ul>
+<li><strong>Historial</strong>: últimos 30 días en lenguaje simple, agrupados por día.</li>
+</ul>
+<p>Además se agregó:</p>
+<ul>
+<li><strong>Detección de suspensión y apagado.</strong> Si hay un hueco de más de 3 minutos</li>
+</ul>
+<p>entre muestras, se compara la última marca con la hora de arranque de Windows. Si la marca es anterior al arranque, hubo apagado o reinicio; si no, fue suspensión.</p>
+<ul>
+<li><strong>Reporte semanal HTML</strong> autocontenido, de 7 días, con interpretación simple,</li>
+</ul>
+<p>que se abre en el navegador y se puede imprimir o guardar como PDF. Se genera bajo demanda (<code>--reporte</code>), cada 24 horas por el servicio, y se conservan 8.</p>
+<ul>
+<li><strong>Tabla de eventos</strong> con índice y retención de 400 días, para que el historial</li>
+</ul>
+<p>sobreviva aunque las muestras detalladas se resuman.</p>
+<ul>
+<li><strong>Aviso flotante propio</strong>: ventana sin bordes, abajo a la derecha,</li>
+</ul>
+<p>400 × 148 px, siempre encima, 9 segundos, clic para abrir el panel.</p>
+<ul>
+<li><strong>Tema automático</strong> según la preferencia de Windows.</li>
+<li><strong>Límite de ejecución del panel de 3650 días</strong>, para que no se cierre solo.</li>
+<li><strong>Mutex configurable</strong> con <code>SALUD_PC_MUTEX</code>, para poder probar sin chocar con</li>
+</ul>
+<p>la instalación real.</p>
+<p>También se incorporó el controlador firmado <strong>PawnIO 2.2.0</strong> para leer temperaturas sin que Windows Defender lo bloquee, junto con <strong>LibreHardwareMonitor 0.9.6</strong>. PawnIO es un componente compartido: si ya está instalado, el instalador no lo toca, y al desinstalar SaludPC se deja instalado.</p>
+<h2>6.2 Qué funcionaba</h2>
+<ul>
+<li>Panel legible en 1366 × 768, con estética cuidada y tema automático.</li>
+<li>Historial comprensible: «Estuvo 2 horas en reposo», «Estuvo apagado 1 día».</li>
+<li>Reporte semanal útil para imprimir o guardar.</li>
+<li>Detección correcta de pausas largas.</li>
+<li>Panel que ya no se cierra solo por el límite de las tareas.</li>
+<li>Instalación y arranque automático estables.</li>
+</ul>
+<h2>6.3 Qué no funcionaba</h2>
+<ul>
+<li><strong>El aviso flotante casi nunca aparecía.</strong> Este fue el problema central de la</li>
+</ul>
+<p>versión.</p>
+<ul>
+<li><strong>No había forma de probar el aviso</strong> sin esperar un problema real.</li>
+<li><strong>El aviso no se mostraba al abrir el panel</strong> si el equipo ya estaba en</li>
+</ul>
+<p>Amarillo o Rojo: el primer estado observado se tomaba como referencia.</p>
+<ul>
+<li><strong>No había botón para silenciar avisos.</strong></li>
+<li><strong>El historial no se podía filtrar ni exportar</strong>, y mostraba 30 días aunque la</li>
+</ul>
+<p>base guardara 400.</p>
+<ul>
+<li><strong>El reporte no se enviaba por correo</strong> ni se podía programar desde el panel.</li>
+<li><strong>El instalador no estaba firmado</strong>: SmartScreen podía advertir.</li>
+<li><strong>No había actualización automática.</strong></li>
+</ul>
+<hr>
+<h1>7. El caso del aviso que no aparecía</h1>
+<p>Este es el episodio más importante de la historia reciente, porque mezcló un comportamiento esperado con un defecto real.</p>
+<p>Después de instalar la 0.5.0, el usuario observó que el programa arrancaba solo, pero no mostraba el aviso flotante. El diagnóstico encontró dos causas independientes.</p>
+<h2>7.1 Causa uno: el equipo estaba aprendiendo</h2>
+<p>El baseline real decía:</p>
+<pre><code>{
+  &quot;aprendiendo&quot;: true,
+  &quot;dias&quot;: 1,
+  &quot;muestras&quot;: 194,
+  &quot;metricas&quot;: {}
+}</code></pre>
+<p>El programa necesita <strong>3 días y al menos 300 muestras</strong> para saber qué es normal en ese equipo. Mientras <code>aprendiendo</code> sea <code>true</code>, el estado es «Aprendiendo» y, por diseño, no se generan alertas. Es correcto: avisar antes de conocer el equipo produciría falsos positivos.</p>
+<p>Con una muestra por minuto, 194 muestras son unas tres horas y media de equipo encendido. Faltaban días de uso normal.</p>
+<h2>7.2 Causa dos: el aviso dependía del panel</h2>
+<p>En la 0.5.0 la lógica era esta:</p>
+<p class="num"><span class="num-n">1.</span> Al abrir, el panel guardaba el estado actual como referencia.</p>
+<p class="num"><span class="num-n">2.</span> En cada actualización comparaba el estado nuevo con el anterior.</p>
+<p class="num"><span class="num-n">3.</span> Solo avisaba si el estado <strong>empeoraba</strong> con el panel abierto.</p>
+<p class="num"><span class="num-n">4.</span> Nunca avisaba al abrir si el equipo ya estaba en Amarillo o Rojo.</p>
+<p class="num"><span class="num-n">5.</span> Si el panel estaba cerrado, el servicio registraba el cambio en el historial,</p>
+<p>pero no mostraba nada.</p>
+<p>Por eso, aunque el equipo hubiera pasado a Amarillo, al abrir el panel el aviso no aparecía: el primer estado se tomaba como referencia.</p>
+<h2>7.3 Qué sí estaba funcionando</h2>
+<ul>
+<li>El servicio tomaba muestras y registraba pausas (se vieron suspensiones de 16</li>
+</ul>
+<p>y 11 minutos).</p>
+<ul>
+<li>El baseline se generaba y se actualizaba.</li>
+<li>El panel abría solo al iniciar sesión.</li>
+<li>El historial y el reporte semanal estaban disponibles.</li>
+</ul>
+<p>La conclusión fue que el comportamiento observado era el esperado para un equipo en aprendizaje, pero el diseño del aviso era frágil. Se corrigió en la 0.5.1.</p>
+<hr>
+<h1>8. Versión 0.5.1: el aviso independiente del panel</h1>
+<h2>8.1 Qué se cambió</h2>
+<ul>
+<li><strong>El servicio dispara el aviso.</strong> Cuando detecta que el estado empeora, lanza</li>
+</ul>
+<p>un proceso <code>--aviso</code> aunque el panel esté cerrado.</p>
+<ul>
+<li><strong>Se recuerda el último estado avisado</strong> en</li>
+</ul>
+<p><code>C:\ProgramData\SaludPC\ultimo_estado_aviso.json</code>. Si el equipo arranca ya en Atención o Revisar, avisa una vez; al mejorar, actualiza la referencia sin mostrar nada; si vuelve a empeorar, avisa de nuevo.</p>
+<ul>
+<li><strong>El panel ya no avisa por su cuenta</strong>, para evitar duplicados.</li>
+<li><strong>Modo de prueba</strong>: <code>SaludPC.exe --aviso accion --mensaje "Prueba"</code> muestra el</li>
+</ul>
+<p>aviso y termina, sin alterar datos ni estado.</p>
+<ul>
+<li><strong>Texto de aprendizaje mejorado</strong>: «Estamos conociendo tu equipo (1 de 3 días,</li>
+</ul>
+<p>194 de 300 muestras)…», para que se entienda por qué todavía no hay alertas.</p>
+<h2>8.2 Qué se probó</h2>
+<table>
+<thead><tr><th>Prueba</th><th>Resultado</th></tr></thead>
+<tbody>
+<tr><td><code>python app.py --aviso</code></td><td>Mostró el aviso durante 9,6 segundos</td></tr>
+<tr><td>Ejecutable empaquetado <code>--aviso</code></td><td>Mostró el aviso durante 10,2 segundos, código de salida 0</td></tr>
+<tr><td>Servicio simulado con estado de Atención</td><td>Detectó el cambio, registró «Aviso flotante mostrado» y creó <code>ultimo_estado_aviso.json</code></td></tr>
+<tr><td>Segunda ejecución con el mismo estado</td><td>No repitió el aviso</td></tr>
+<tr><td>Servicio empaquetado</td><td>También mostró el aviso</td></tr>
+</tbody></table>
+<p>Estas pruebas confirman que el aviso ya no depende de que el panel esté abierto.</p>
+<h2>8.3 Qué sigue sin estar contemplado</h2>
+<ul>
+<li>No hay botón para silenciar los avisos.</li>
+<li>Si el servicio no está corriendo, no hay aviso; el panel tampoco lo muestra.</li>
+<li>No hay historial de avisos mostrados, solo el último estado.</li>
+<li>El instalador no está firmado.</li>
+<li>No hay actualización automática.</li>
+<li>El aviso no se puede personalizar desde el panel.</li>
+</ul>
+<h2>8.4 Estado de la instalación</h2>
+<p>El instalador <code>dist_instalador\SaludPC-Setup-0.5.1.exe</code> está compilado:</p>
+<ul>
+<li>Tamaño: 39.217.851 bytes.</li>
+<li>SHA-256: <code>61B398CDAB5CBDB3D799610A650C3AE5839507F411E2AB8E0EB80A4959E72492</code>.</li>
+<li>Windows Defender no reportó amenazas.</li>
+</ul>
+<p><strong>La 0.5.1 no llegó a instalarse.</strong> Se compiló y se probó, pero antes de instalarla se preparó la 0.5.2 con el arreglo del contador de días. El 4 de noviembre se instaló directamente la 0.5.2 sobre la 0.5.0.</p>
+<hr>
+<h1>9. Versión 0.5.2: el baseline se refresca solo</h1>
+<h2>9.1 El síntoma</h2>
+<p>El 4 de noviembre, a media mañana, el panel mostraba «1 de 3 días» aunque la base ya tenía dos fechas locales (3 y 4 de noviembre) y 555 muestras distintas. No era un error de cálculo: el baseline se había guardado a las 11:15:25, antes de la primera muestra del día 4 (11:16:34), y el siguiente recálculo estaba previsto recién seis horas después, a las 17:15.</p>
+<p>El archivo del baseline seguía diciendo:</p>
+<pre><code>{
+  &quot;aprendiendo&quot;: true,
+  &quot;dias&quot;: 1,
+  &quot;muestras&quot;: 555,
+  &quot;metricas&quot;: {}
+}</code></pre>
+<p>Mientras tanto, la base tenía dos fechas. El contador podía quedar hasta seis horas atrasado y el usuario no tenía forma de saber si el programa estaba avanzando o se había trabado.</p>
+<h2>9.2 Qué se cambió</h2>
+<ul>
+<li><strong><code>almacen.contar_dias_muestras()</code></strong>: consulta agregada con</li>
+</ul>
+<p><code>date(ts, 'localtime')</code> y <code>COUNT(DISTINCT ts)</code>. Cuenta fechas locales distintas y fotos distintas del equipo sin cargar el historial en memoria.</p>
+<ul>
+<li><strong><code>cerebro.main()</code></strong>: mientras aprende usa esos conteos; cuando completa, carga</li>
+</ul>
+<p>el historial con pandas y calcula las métricas.</p>
+<ul>
+<li><strong><code>app.py</code></strong>: recalcula el baseline en tres momentos: al arrancar (después de</li>
+</ul>
+<p>la primera muestra), al cambiar el día local y cada 6 horas. Si el recálculo falla, reintenta a los 10 minutos en vez de esperar 6 horas.</p>
+<ul>
+<li>El conteo usa la fecha local, no UTC. <code>date(ts, 'localtime')</code> de SQLite</li>
+</ul>
+<p>coincide exactamente con <code>tz_convert(local)</code> de pandas.</p>
+<p>La regla no cambió: siguen siendo **3 fechas locales distintas y 300 muestras distintas**. Lo que cambió es cuándo se refresca el conteo.</p>
+<h2>9.3 Qué se probó</h2>
+<table>
+<thead><tr><th>Prueba</th><th>Resultado</th></tr></thead>
+<tbody>
+<tr><td>2 fechas sintéticas, 360 muestras</td><td><code>dias: 2</code>, <code>aprendiendo: true</code>, sin métricas</td></tr>
+<tr><td>3 fechas sintéticas, 540 muestras</td><td><code>dias: 3</code>, <code>aprendiendo: false</code>, métricas de CPU, disco y memoria</td></tr>
+<tr><td>Conteo SQL contra pandas</td><td>Coinciden: 2 fechas y 561 muestras; luego 3 fechas y 540</td></tr>
+<tr><td>Ejecutable compilado con base de 3 días</td><td><code>aprendiendo: false</code>, <code>dias: 3</code>, <code>muestras: 540</code>, salida 0</td></tr>
+<tr><td>Servicio real</td><td>Recalculó al arrancar (21:12), por cambio de día (00:00:44) y cada 6 horas</td></tr>
+</tbody></table>
+<p>No se falsearon fechas ni datos: las pruebas sintéticas usaron una carpeta temporal y la validación final se hizo con la base real.</p>
+<h2>9.4 Instalación y primera validación real</h2>
+<ul>
+<li>Instalador: <code>dist_instalador\SaludPC-Setup-0.5.2.exe</code>, 39.388.839 bytes.</li>
+<li>Instalado el 4 de noviembre a las 11:53, con un solo UAC. Conservó datos y</li>
+</ul>
+<p>baseline.</p>
+<ul>
+<li>El ejecutable instalado coincide con el compilado: 12.542.511 bytes, 4 de</li>
+</ul>
+<p>noviembre, 11:31:38.</p>
+<ul>
+<li>La 0.5.1 no se instaló: se pasó directamente de la 0.5.0 a la 0.5.2.</li>
+</ul>
+<p>El 5 de noviembre el log del servicio mostró la secuencia esperada:</p>
+<pre><code>00:00:37 primera muestra del día 5
+00:00:44 Baseline v2 guardado
+00:00:44 Días con datos: 3 | Fotos del equipo: 1127 | Aprendiendo: False
+00:00:44 cpu_load: aviso=87.74% rojo=98.0%
+00:00:44 ...
+00:00:44 Baseline recalculado</code></pre>
+<p>Siete segundos después de la primera muestra del día, el baseline pasó a 3 días y dejó de estar en aprendizaje. Las 1.127 muestras de ese momento eran las 555 del día 3, las 571 del día 4 y la primera del día 5.</p>
+<p>Al momento de esta validación (00:37 del 5 de noviembre), la base tenía 1.163 muestras distintas en 3 fechas. El estado era <code>ok</code> y las seis métricas estaban dentro de su límite: procesador 32 %, temperatura del procesador 54 °C, temperatura del disco 36 °C, disco 24,7 %, temperatura de la GPU 47 °C y memoria 36,5 %. El reporte <code>reporte_2026-11-05.html</code> se actualizó a las 00:34. El aviso de prueba con el ejecutable instalado mostró la ventana durante 9 segundos y cerró con código 0, sin alterar el historial.</p>
+<hr>
+<h1>10. Versión 0.5.3: consumo, filtros y episodios de pico</h1>
+<h2>10.1 Qué se buscaba</h2>
+<p>La 0.5.3 cierra tres huecos que quedaban en el panel sin agregar más tarjetas: saber cuánto consume el propio agente, poder mirar el historial por tipo de evento y guardar los picos como episodios con inicio, fin y duración.</p>
+<p>La atribución de procesos y el índice de estrés quedaron fuera a propósito. No se implementaron, no se simularon y no se presentan como si existieran.</p>
+<h2>10.2 Consumo del agente</h2>
+<p>El servicio corre siempre y el panel solo cuando se abre. Cada proceso mide lo suyo:</p>
+<ul>
+<li>El servicio mide su propio proceso una vez por minuto y publica CPU y memoria</li>
+</ul>
+<p>en <code>C:\ProgramData\SaludPC\consumo_servicio.json</code>.</p>
+<ul>
+<li>El panel mide su proceso cada 5 segundos, lee el archivo del servicio y suma</li>
+</ul>
+<p>las dos mediciones.</p>
+<ul>
+<li>El archivo se considera fresco durante 180 segundos. Si el servicio no</li>
+</ul>
+<p>publicó nada, la línea agrega «servicio sin datos» en vez de inventar un cero.</p>
+<p>El promedio es móvil sobre los últimos 5 minutos y se calcula por tiempo, no por cantidad de muestras: las lecturas de sensores no siempre tardan lo mismo. La CPU de <code>psutil</code> se divide por la cantidad de núcleos lógicos para que el número sea comparable con el uso total del equipo.</p>
+<p>La línea de la cabecera no usa la palabra «Optimizado». Solo agrega «consumo bajo» cuando el promedio de CPU es menor a 0.95 %. Si el número no alcanza, no se afirma nada.</p>
+<h2>10.3 Filtros del historial</h2>
+<p>El historial tiene un selector con cuatro opciones: <strong>Todos</strong>, <strong>Energía</strong>, <strong>Carga</strong> y <strong>Térmicas</strong>.</p>
+<ul>
+<li><strong>Energía</strong>: suspensiones y apagados.</li>
+<li><strong>Térmicas</strong>: eventos de <code>cpu_temp</code>, <code>gpu_temp</code> y <code>disk_temp</code>.</li>
+<li><strong>Carga</strong>: procesador, memoria, disco, GPU y cualquier evento genérico.</li>
+</ul>
+<p>Un aviso o un pico hereda la categoría de su métrica. La firma que decide si hay que repintar el historial usa <code>MAX(id)</code> de la tabla de eventos, no solo la fecha más nueva: un pico se guarda con la hora en que empezó y puede quedar debajo de eventos más recientes.</p>
+<h2>10.4 Episodios de pico</h2>
+<p>Un episodio empieza cuando una métrica entra en atención o acción con la misma regla de 3 de 5 muestras para amarillo y 2 de 5 para rojo que usa el vigilante. Termina cuando la métrica vuelve a estar normal.</p>
+<p>Solo se guarda como evento <code>pico</code> si duró <strong>5 minutos o más</strong>. El detalle es un JSON con la métrica, el inicio, el fin, el máximo, la duración, los límites de aviso y rojo, y el estado final. El evento se guarda con <code>ts=inicio</code> para que el historial muestre el pico donde empezó, no donde terminó.</p>
+<p>Los episodios abiertos se persisten en <code>C:\ProgramData\SaludPC\episodios_abiertos.json</code>. Si el servicio estuvo detenido más de 15 minutos, el episodio se descarta: no se puede afirmar que duró todo ese tiempo.</p>
+<h2>10.5 Qué se probó</h2>
+<table>
+<thead><tr><th>Prueba</th><th>Resultado</th></tr></thead>
+<tbody>
+<tr><td><code>tests/test_agente.py</code></td><td>Medición del proceso, archivo publicado, frescura de 180 s y umbral de consumo bajo</td></tr>
+<tr><td><code>tests/test_episodios.py</code></td><td>Categorías, pico de 4 minutos descartado, pico de carga de 6 minutos, pico térmico rojo de 8 minutos y episodio abandonado descartado</td></tr>
+<tr><td><code>tests/test_contador_dias.py</code></td><td>2 y 3 fechas siguen dando el mismo resultado</td></tr>
+<tr><td><code>tests/test_modelo_simulado.py</code></td><td>El modelo completo sigue pasando</td></tr>
+<tr><td>Panel de desarrollo con datos reales</td><td>Cabecera con consumo combinado y filtros Todos / Energía / Carga / Térmicas</td></tr>
+<tr><td>Panel instalado</td><td>Abre sin errores y el servicio publica su consumo</td></tr>
+</tbody></table>
+<p>No se falsearon fechas ni datos. Las pruebas de episodios usaron una carpeta temporal con <code>SALUD_PC_DATOS</code>; la validación final se hizo con la base real.</p>
+<h2>10.6 Instalación y validación real</h2>
+<ul>
+<li>Instalador: <code>dist_instalador\SaludPC-Setup-0.5.3.exe</code>, 39.401.717 bytes.</li>
+<li>SHA-256: <code>622FAACB3F3D5E52348BA76C903F3FD884F6A8BE9AA7164C4FAF5CDBEF852385</code>.</li>
+<li>Compilado el 5 de noviembre a las 01:23 e instalado alrededor de las 01:50,</li>
+</ul>
+<p>con un solo UAC.</p>
+<ul>
+<li>Windows registra <code>DisplayVersion 0.5.3</code>; el servicio se reinició a las 01:50:30</li>
+</ul>
+<p>y recalculó el baseline con 3 días y 1.227 muestras.</p>
+<ul>
+<li>El servicio publica su consumo cada minuto; en régimen normal ronda 0,1-0,2 %</li>
+</ul>
+<p>de CPU y decenas de MB de RAM.</p>
+<p>La instalación se topó con un archivo bloqueado, <code>DiskInfoToolkit.dll</code>, porque el panel seguía abierto. El instalador detiene las tareas, pero en este caso el proceso del panel sobrevivió; hubo que cerrarlo y pulsar «Reintentar». No hizo falta un segundo UAC. Queda como mejora para la próxima versión forzar el cierre de cualquier <code>SaludPC.exe</code> antes de copiar los archivos.</p>
+<p>Validación con datos reales:</p>
+<ul>
+<li>La base tenía 8 eventos, todos de energía (6 suspensiones y 2 apagados). Por</li>
+</ul>
+<p>eso Todos y Energía muestran contenido; Carga y Térmicas muestran el mensaje de que no hay eventos de ese tipo en los últimos 30 días.</p>
+<ul>
+<li>El panel de desarrollo mostró en la cabecera el consumo combinado del servicio</li>
+</ul>
+<p>y del panel, sin «servicio sin datos».</p>
+<ul>
+<li>La medición externa del panel ya estabilizado quedó entre 0,3 % y 0,85 % del</li>
+</ul>
+<p>equipo; los picos de alrededor de 4 % corresponden a la lectura de sensores.</p>
+<ul>
+<li>El panel instalado abrió sin errores.</li>
+<li>Todavía no se registró un pico real. No se forzó la base para fabricarlo; la</li>
+</ul>
+<p>lógica quedó cubierta por las pruebas en carpeta temporal.</p>
+<hr>
+<h1>11. Casilla «No mostrar ventana al iniciar sesión»</h1>
+<h2>11.1 Qué se buscaba</h2>
+<p>El panel se abría automáticamente al iniciar sesión mediante la tarea programada <code>SaludPC Panel</code>. Algunos usuarios necesitaban evitar esa ventana automática y abrir el panel solo cuando lo decidieran.</p>
+<h2>11.2 Qué se cambió</h2>
+<ul>
+<li>Se agregó el módulo <code>config_usuario.py</code> que guarda preferencias en</li>
+</ul>
+<p><code>C:\ProgramData\SaludPC\config_usuario.json</code>.</p>
+<ul>
+<li>Se agregó la casilla <strong>«No mostrar esta ventana al iniciar sesión»</strong> en el</li>
+</ul>
+<p>pie del panel.</p>
+<ul>
+<li>Se agregó el argumento <code>--panel-auto</code> en <code>app.py</code>: al iniciar sesión, la tarea</li>
+</ul>
+<p>programada usa este argumento y revisa la preferencia antes de abrir la ventana. Si el usuario marcó la casilla, el panel no se abre solo.</p>
+<ul>
+<li>El acceso directo del menú Inicio sigue usando <code>--panel</code> (abre siempre,</li>
+</ul>
+<p>ignora la preferencia).</p>
+<ul>
+<li>El instalador (<code>instalar_tareas.ps1</code>) actualizó la tarea del panel para usar</li>
+</ul>
+<p><code>--panel-auto</code>.</p>
+<h2>11.3 Qué se probó</h2>
+<ul>
+<li><code>config_usuario.py</code> lee y escribe correctamente la preferencia.</li>
+<li>Por defecto, <code>mostrar_ventana_inicio</code> es <code>True</code>.</li>
+<li>Al marcar la casilla, se guarda <code>false</code> y el panel no se abre automáticamente.</li>
+</ul>
+<hr>
+<h1>12. Edición empresarial: servidor central y cliente operario</h1>
+<h2>12.1 Qué se buscaba</h2>
+<p>La edición local funciona por equipo, pero el área de TI necesita ver el estado de todas las computadoras desde un solo lugar. Se necesitaba un servidor central que reciba reportes de los agentes y un panel web para TI.</p>
+<h2>12.2 Arquitectura implementada</h2>
+<table>
+<thead><tr><th>Componente</th><th>Archivo</th><th>Función</th></tr></thead>
+<tbody>
+<tr><td>Servidor central</td><td><code>servidor_central.py</code></td><td>Recibe reportes por HTTP, valida firma HMAC-SHA256, almacena en SQLite, expone panel web</td></tr>
+<tr><td>Cliente operario</td><td><code>cliente_gui.py</code></td><td>Interfaz gráfica para inscribir equipo y enviar reportes de prueba</td></tr>
+<tr><td>Librería cliente</td><td><code>cliente_enterprise.py</code></td><td>Inscripción con token único, envío de reportes firmados, envío de avisos</td></tr>
+</tbody></table>
+<h2>12.3 Flujo validado</h2>
+<p class="num"><span class="num-n">1.</span> <strong>Servidor central</strong>: se instala con <code>SaludPC-Servidor-Central-1.0.1.exe</code>, escucha en el puerto 8443.</p>
+<p class="num"><span class="num-n">2.</span> <strong>Inscripción</strong>: el cliente operario envía ID del equipo, organización, sede y área; el servidor devuelve un token único.</p>
+<p class="num"><span class="num-n">3.</span> <strong>Envío de reporte</strong>: el cliente envía métricas (CPU, RAM, disco, temperatura) con firma HMAC-SHA256.</p>
+<p class="num"><span class="num-n">4.</span> <strong>Panel de TI</strong>: el servidor muestra una tabla con todos los equipos, sus estados (ok, atencion, accion, aprendizaje, desconocido) y sus últimas métricas.</p>
+<h2>12.4 Prueba de flujo completo</h2>
+<p>Se validó el ciclo completo en localhost:</p>
+<table>
+<thead><tr><th>Paso</th><th>Acción</th><th>Resultado</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Inscripción de <code>OPERARIO-001</code></td><td>Token generado: <code>159991b985e9fd5db81b5adc98d1096e</code></td></tr>
+<tr><td>2</td><td>Envío de reporte (CPU 32.5%, RAM 45.0%, Disco 24.7%, Temp 54.0°C)</td><td><code>Reporte recibido</code></td></tr>
+<tr><td>3</td><td>Envío de aviso (atencion)</td><td><code>Aviso recibido</code></td></tr>
+<tr><td>4</td><td>Consulta panel de TI</td><td>Equipo visible con estado <code>ok</code> y métricas</td></tr>
+</tbody></table>
+<h2>12.5 Seguridad</h2>
+<ul>
+<li>Token único por equipo basado en ID + clave organizacional.</li>
+<li>Firma HMAC-SHA256 en cada reporte; el servidor rechaza firmas inválidas con <code>403 Forbidden</code>.</li>
+<li>Lista cerrada de campos técnicos: CPU, memoria, disco, temperaturas, estado del agente. Sin datos personales ni de pacientes.</li>
+</ul>
+<h2>12.6 Instaladores generados</h2>
+<table>
+<thead><tr><th>Instalador</th><th>Ruta</th><th>Tamaño</th></tr></thead>
+<tbody>
+<tr><td>Servidor Central 1.0.0</td><td><code>dist_instalador\instaladores\SaludPC-Servidor-Central-1.0.0.exe</code></td><td>9.65 MB</td></tr>
+<tr><td>Cliente Operario 1.0.0</td><td><code>dist_instalador\instaladores\SaludPC-Cliente-Operario-1.0.0.exe</code></td><td>24.16 MB</td></tr>
+<tr><td>Servidor Central 1.0.1</td><td><code>dist_instalador\instaladores\SaludPC-Servidor-Central-1.0.1.exe</code></td><td>9.62 MB</td></tr>
+<tr><td>Cliente Operario 1.0.1</td><td><code>dist_instalador\instaladores\SaludPC-Cliente-Operario-1.0.1.exe</code></td><td>23.05 MB</td></tr>
+<tr><td>Servidor Central 1.0.2</td><td><code>dist_instalador\instaladores\SaludPC-Servidor-Central-1.0.2.exe</code></td><td>9.62 MB</td></tr>
+<tr><td>Cliente Operario 1.0.2</td><td><code>dist_instalador\instaladores\SaludPC-Cliente-Operario-1.0.2.exe</code></td><td>23.06 MB</td></tr>
+</tbody></table>
+<p>Los instaladores 1.0.1 cierran la instancia anterior antes de copiar los archivos: <code>taskkill /F /IM SaludPC-Servidor.exe /T</code> en el servidor y <code>taskkill /F /IM SaludPC-Cliente-Operario.exe /T</code> en el operario. Así se evita el error de «archivo en uso» al actualizar sobre una versión abierta.</p>
+<h2>12.7 Mejora 1.0.1: el cliente no se cierra y muestra el aprendizaje</h2>
+<p>La versión 1.0.0 tenía dos defectos que solo aparecían en el equipo del operario:</p>
+<p class="num"><span class="num-n">1.</span> <strong>La ventana desaparecía al inscribir.</strong> El cliente creaba una segunda</p>
+<p>ventana (<code>CTk</code>) para el panel, ocultaba la de configuración y el panel fallaba al construirse. El origen exacto era <code>PanelUsuario._log()</code>, que usaba <code>self.area_log</code>, un atributo que nunca se creaba. La excepción ocurría después de ocultar la configuración, por eso el usuario veía «desaparecer» todo.</p>
+<p class="num"><span class="num-n">2.</span> <strong>El token no se guardaba.</strong> <code>cliente_enterprise.py</code> importaba un módulo</p>
+<p><code>rutas</code> que no estaba incluido en el paquete de PyInstaller; el error se silenciaba y el equipo volvía a pedir inscripción en cada arranque.</p>
+<p>La 1.0.1 reescribe el cliente como <strong>una sola ventana</strong> que alterna entre la inscripción y el panel, sin crear una segunda raíz de Tk. La comunicación del hilo de monitoreo con la interfaz pasa por una <code>queue.Queue</code> que se vacía con <code>after(150)</code>, de modo que nunca se llama a Tk desde un hilo de trabajo.</p>
+<p>Al completar la inscripción, el mismo programa pasa al panel de aprendizaje y confirma explícitamente que el sistema está funcionando. El panel muestra:</p>
+<ul>
+<li>Encabezado con «● Sistema activo» cuando el servidor acepta el reporte.</li>
+<li>Tarjeta «Aprendizaje del equipo» con barra de progreso y porcentaje.</li>
+<li>Contador de muestras (<code>de 300</code>) y de días locales (<code>de 3</code>).</li>
+<li>Estado actual (OK / ATENCIÓN / ACCIÓN) y el último envío.</li>
+<li>Actividad reciente y cuenta regresiva del próximo envío (60 s).</li>
+</ul>
+<p>El avance no se inventa en el cliente: lo calcula el servidor central con <code>GET /progreso</code>, protegido con el token del equipo. El endpoint cuenta muestras y fechas locales distintas y devuelve <code>aprendizaje_completo</code>. El cliente guarda <code>token_equipo.json</code> con ID, token, organización, sede, área y URL; al reabrir entra directo al panel. Si el equipo ya estaba inscrito, el servidor responde <code>409</code> con el token y el cliente lo recupera sin obligar a borrar nada.</p>
+<p>La base de datos central se migra sola: si la tabla <code>reportes</code> no tiene la columna <code>fecha_local</code>, se agrega con <code>ALTER TABLE</code> sin perder las filas anteriores y el progreso usa <code>COALESCE(fecha_local, substr(timestamp,1,10))</code>.</p>
+<p><strong>Pruebas ejecutadas</strong></p>
+<table>
+<thead><tr><th>Prueba</th><th>Resultado</th></tr></thead>
+<tbody>
+<tr><td>Inscripción, reporte y <code>/progreso</code> con servidor Python</td><td>Token, reportes aceptados, 2 muestras / 1 día, token falso rechazado con 403</td></tr>
+<tr><td>Inscripción desde la GUI y apertura del panel</td><td><code>vista=panel</code>, «● Sistema activo», «Muestras: 1 de 300», «Días: 1 de 3»</td></tr>
+<tr><td>Reapertura del cliente con token guardado</td><td>Entra directo al panel con el equipo y la conexión activa</td></tr>
+<tr><td>Cliente <code>.exe</code> compilado contra servidor de prueba</td><td>Envió reporte y consultó <code>/progreso</code> (<code>HTTP 200</code>)</td></tr>
+<tr><td><code>/progreso</code> desde el <code>.exe</code> del servidor</td><td>2 muestras, 1 día, 1 %, <code>aprendizaje_completo=false</code>; token falso → 403</td></tr>
+<tr><td>Migración de base antigua</td><td>Columna <code>fecha_local</code> agregada y fila anterior conservada</td></tr>
+</tbody></table>
+<p>El límite sigue siendo el mismo: el panel dice «Aprendiendo» hasta reunir 300 muestras y 3 fechas locales. No se aceleró el proceso ni se falsearon fechas; el operario ve el avance real y sabe que el sistema está trabajando.</p>
+<h2>12.8 Mejora 1.0.2: estado APRENDIENDO, inicio oculto e instancia única</h2>
+<p>La 1.0.1 ya no se cerraba al inscribir, pero el panel mostraba de inmediato el estado calculado por el cliente (OK / ATENCIÓN / ACCIÓN) aunque el servidor todavía estuviera contando muestras. La 1.0.2 separa esas dos cosas:</p>
+<ul>
+<li>Mientras el servidor no confirme <code>aprendizaje_completo</code>, el panel muestra</li>
+</ul>
+<p><strong>APRENDIENDO</strong> y explica que aún no hay diagnóstico. El cambio a OK, ATENCIÓN o ACCIÓN ocurre solo cuando <code>/progreso</code> devuelve 300 muestras y 3 fechas locales.</p>
+<ul>
+<li>El servidor guarda el estado real que envió el equipo en la tabla <code>reportes</code>,</li>
+</ul>
+<p>pero el estado visible del equipo (<code>equipos.estado</code>) se fuerza a <code>en_aprendizaje</code> hasta completar la línea base. Así el panel de TI no presenta como «OK» un equipo que todavía no tiene historia suficiente.</p>
+<ul>
+<li>El listado y el panel calculan el estado visible en cada consulta, no solo al</li>
+</ul>
+<p>recibir un reporte. Un equipo que ya tenía <code>ok</code> guardado pasa a «En aprendizaje» apenas se actualiza el servidor, aunque todavía no haya enviado una muestra nueva.</p>
+<ul>
+<li>El panel de TI cuenta y muestra la tarjeta y el badge «En aprendizaje».</li>
+</ul>
+<p><strong>Inicio oculto sin detener el envío</strong></p>
+<p>El pie del panel tiene la casilla «No mostrar esta ventana al iniciar sesión (el cliente sigue enviando reportes en segundo plano)». La preferencia se guarda en <code>%PROGRAMDATA%\SaludPC\Cliente\config_cliente.json</code> con la clave <code>mostrar_ventana_inicio</code>.</p>
+<p>El instalador crea un acceso directo en <code>{commonstartup}</code> con el argumento <code>--auto</code>. Al iniciar sesión, el cliente arranca solo y:</p>
+<ul>
+<li>si <code>mostrar_ventana_inicio</code> es <code>true</code>, muestra la ventana;</li>
+<li>si es <code>false</code>, se queda oculto y sigue enviando cada 60 segundos.</li>
+</ul>
+<p>El acceso directo del escritorio y el del menú Inicio no llevan <code>--auto</code>, por lo que una apertura manual siempre muestra la ventana. <code>--oculto</code> fuerza el inicio oculto aunque la preferencia diga lo contrario.</p>
+<p><strong>Cerrar, ocultar y salir</strong></p>
+<ul>
+<li>La X de la ventana ya no termina el programa: oculta la ventana y el cliente</li>
+</ul>
+<p>sigue enviando. La primera vez avisa que SaludPC continúa activo.</p>
+<ul>
+<li>El botón «Ocultar» hace lo mismo sin diálogo.</li>
+<li>El botón «Salir» pide confirmación y detiene el monitoreo.</li>
+</ul>
+<p><strong>Una sola instancia</strong></p>
+<p>El cliente usa el mutex <code>Local\SaludPC-Cliente-Operario</code> y un socket de control en <code>127.0.0.1:8457</code>. Si el usuario abre el acceso directo mientras la instancia oculta sigue trabajando, la segunda apertura no crea otra ventana ni otro hilo: envía la orden <code>SHOW</code> a la instancia existente, que se muestra, y termina sola.</p>
+<p><strong>Pruebas ejecutadas</strong></p>
+<table>
+<thead><tr><th>Prueba</th><th>Resultado</th></tr></thead>
+<tbody>
+<tr><td>Lógica <code>estado_equipo_visible</code></td><td>1/1 y 299/3 → <code>en_aprendizaje</code>; 300/3 → estado del reporte; sin reporte → <code>desconocido</code></td></tr>
+<tr><td>Un reporte con estado <code>accion</code></td><td><code>equipos.estado = en_aprendizaje</code>, el reporte conserva <code>accion</code></td></tr>
+<tr><td>300 muestras en 3 fechas</td><td><code>aprendizaje_completo=true</code> y el equipo visible pasa al estado real</td></tr>
+<tr><td>Cliente Python con <code>--auto</code> y preferencia oculta</td><td>Proceso vivo, ventana no visible, 1 reporte recibido</td></tr>
+<tr><td>Segunda apertura del cliente</td><td>Termina sola y muestra la ventana de la primera instancia</td></tr>
+<tr><td>Servidor y cliente <code>.exe</code> 1.0.2</td><td>Portada v1.0.2, inscripción, reporte, estado <code>en_aprendizaje</code>, oculto y reapertura con <code>SHOW</code></td></tr>
+<tr><td>Copia de la base real (<code>Pc-002</code>, 16 reportes, estado guardado <code>ok</code>)</td><td>El listado y la portada muestran <code>en_aprendizaje</code>; el detalle conserva los 16 reportes</td></tr>
+</tbody></table>
+<p>Los instaladores 1.0.2 se generaron con Inno Setup 7.1.1 y se probaron los ejecutables empaquetados en una carpeta temporal, sin tocar la base real.</p>
+<h2>12.9 Alertas después del aprendizaje: qué hace hoy y qué falta</h2>
+<p>Hoy la edición empresarial <strong>no tiene un modelo estadístico de anomalías</strong> como la edición local 0.5.3. El «aprendizaje» empresarial es un conteo: 300 muestras y 3 fechas locales. Mientras ese conteo no se completa, el equipo se muestra como «En aprendizaje». Cuando se completa, el estado que llega en cada reporte es el que calcula el cliente con umbrales fijos:</p>
+<table>
+<thead><tr><th>Condición</th><th>Estado</th></tr></thead>
+<tbody>
+<tr><td>CPU &gt; 90 % o RAM &gt; 95 %</td><td><code>accion</code> (Requiere acción)</td></tr>
+<tr><td>CPU &gt; 80 % o RAM &gt; 85 %</td><td><code>atencion</code> (Atención)</td></tr>
+<tr><td>Resto</td><td><code>ok</code> (Normal)</td></tr>
+</tbody></table>
+<p>Con esos umbrales, después del aprendizaje **sí se muestra la anomalía en el panel**: el reporte lleva el estado, el servidor lo guarda y la portada del panel de TI cambia el badge y las tarjetas de resumen (se refresca cada 30 segundos). El detalle del equipo conserva el estado real de cada reporte aunque el equipo todavía esté en aprendizaje.</p>
+<p>Lo que <strong>no</strong> existe todavía:</p>
+<ul>
+<li>No hay alerta push, correo ni notificación al operario o al personal de TI.</li>
+<li>No hay una bandeja de alertas ni un historial de «avisos» visible en el panel.</li>
+</ul>
+<p>La tabla <code>avisos</code> y el endpoint <code>/aviso</code> existen, pero el cliente gráfico no los usa y el panel no los muestra.</p>
+<ul>
+<li>No hay detección de tendencia ni comparación contra el baseline del propio</li>
+</ul>
+<p>equipo; solo umbrales fijos.</p>
+<ul>
+<li>Si el equipo supera un umbral durante el aprendizaje, el panel de TI sigue</li>
+</ul>
+<p>mostrando «En aprendizaje» (el estado real queda en la tabla de reportes), porque todavía no hay línea base para decidir si es normal para ese equipo.</p>
+<p>La fase siguiente natural es portar a la edición empresarial el baseline estadístico de la 0.5.3 (p95/p99, pisos y techos, 3 de 5 muestras para amarillo y 2 de 5 para rojo) y agregar una bandeja de alertas con confirmación y correo opcional. Eso responde a la pregunta «¿manda alerta?»: hoy avisa en el panel; todavía no manda un aviso activo.</p>
+<h2>12.10 Conexión segura HTTPS: opciones y recomendación</h2>
+<p>Hoy el servidor escucha HTTP en el puerto 8443. La firma HMAC-SHA256 garantiza que un reporte no fue alterado y que lo envió un equipo con token, pero **no cifra** el tráfico: en la red local, alguien con acceso podría leer las métricas (CPU, RAM, disco) y el token. No hay datos de pacientes, pero el token permite enviar reportes falsos si se captura.</p>
+<p>Opciones, de menor a mayor esfuerzo:</p>
+<p class="num"><span class="num-n">1.</span> <strong>Certificado autofirmado con pinning (recomendado para el piloto).</strong> El</p>
+<p>servidor usa un certificado propio; el cliente incluye la huella o el certificado y rechaza cualquier otro. No requiere dominio público ni CA. Es el menor cambio: envolver el socket con <code>ssl.SSLContext</code> y validar la huella en <code>cliente_enterprise.py</code>.</p>
+<p class="num"><span class="num-n">2.</span> <strong>CA interna del hospital (AD CS).</strong> Si el hospital ya tiene una CA interna,</p>
+<p>se emite un certificado para el servidor y los equipos confían en la CA. Es la opción más ordenada para producción, pero depende de TI.</p>
+<p class="num"><span class="num-n">3.</span> <strong>Proxy inverso con Caddy o nginx.</strong> El servidor sigue en HTTP local y el</p>
+<p>proxy termina TLS. Caddy puede usar un certificado interno; nginx requiere configurar los certificados. Útil si se quiere separar TLS del programa.</p>
+<p class="num"><span class="num-n">4.</span> <strong>Let's Encrypt.</strong> Solo funciona con un nombre DNS público y el servidor</p>
+<p>expuesto; no encaja con un servidor on-premise en red privada.</p>
+<p class="num"><span class="num-n">5.</span> <strong>mTLS (certificado de cliente).</strong> Además del token, cada equipo presenta un</p>
+<p>certificado. Es lo más fuerte, pero complica el despliegue y la renovación.</p>
+<p class="num"><span class="num-n">6.</span> <strong>VPN o red segmentada.</strong> No cambia el programa, pero aísla el tráfico. Sirve</p>
+<p>como complemento, no como sustituto de TLS.</p>
+<p>Recomendación para el piloto: <strong>HTTPS con certificado autofirmado y pinning</strong> (huella SHA-256 del certificado en el cliente), manteniendo el token y la firma HMAC. Para producción, migrar a <strong>CA interna</strong> y, si se requiere, mTLS. El cambio se puede hacer sin tocar el formato de los reportes: solo el transporte.</p>
+<h2>12.11 Mejora 1.0.3: búsqueda, filtros, informes y manual</h2>
+<p>La 1.0.2 dejó el panel de TI con tarjetas y tabla, pero sin forma de encontrar un equipo entre muchos ni de entregar un informe. La 1.0.3 se concentra en el trabajo diario del personal de TI:</p>
+<ul>
+<li><strong>Búsqueda:</strong> filtro por ID de equipo, organización, sede o área, con</li>
+</ul>
+<p>coincidencias parciales. La consulta se hace en el servidor y también está disponible en la API (<code>/equipos?buscar=</code>).</p>
+<ul>
+<li><strong>Filtro por estado:</strong> Todos, Normal, Atención, Requiere acción, En</li>
+</ul>
+<p>aprendizaje y Sin reportar. Se combina con la búsqueda (<code>/equipos?estado=</code>).</p>
+<ul>
+<li><strong>Barra de acciones:</strong> el botón <strong>↻ Actualizar</strong> pasó a la derecha, junto al</li>
+</ul>
+<p>buscador, el filtro, <strong>Buscar</strong> y <strong>Limpiar</strong>. Las tarjetas de resumen siguen mostrando el panorama general; la tabla muestra solo lo filtrado y el texto «Mostrando: N» indica cuántos equipos quedaron visibles.</p>
+<ul>
+<li><strong>Generación de informes:</strong> un modal pregunta qué informe necesita el usuario</li>
+</ul>
+<p>(todas las máquinas o un equipo específico) y en qué formato (HTML imprimible o CSV para Excel). El informe general incluye todos los equipos inscritos aunque la tabla esté filtrada. El informe por equipo incluye ficha, totales, promedios, máximos y el historial: hasta 500 reportes en HTML y todos en CSV.</p>
+<ul>
+<li><strong>Detalle con informe:</strong> la pantalla de detalle tiene un botón directo para</li>
+</ul>
+<p>generar el informe de ese equipo.</p>
+<ul>
+<li><strong>Manual de uso:</strong> se creó <code>MANUAL_DE_USO.md</code> y su versión DOCX/PDF, con</li>
+</ul>
+<p>instalación, operación local, servidor, cliente, búsqueda, informes, privacidad, solución de problemas, preguntas frecuentes y glosario.</p>
+<p><strong>Pruebas ejecutadas</strong></p>
+<table>
+<thead><tr><th>Prueba</th><th>Resultado</th></tr></thead>
+<tbody>
+<tr><td>Portada 1.0.3</td><td>Campo de búsqueda, filtro de estado, botón Actualizar a la derecha y botón de informe presentes</td></tr>
+<tr><td>Búsqueda por ID, organización, sede y área</td><td>Devuelve solo los equipos que coinciden; sin coincidencias muestra un mensaje claro</td></tr>
+<tr><td>Filtro por estado y combinación con búsqueda</td><td><code>ok</code>, <code>atencion</code>, <code>en_aprendizaje</code> y combinaciones responden como se espera en la portada y en la API</td></tr>
+<tr><td>Informe general HTML</td><td>Incluye todos los equipos, resumen por estado y enlaces a impresión y CSV</td></tr>
+<tr><td>Informe general CSV</td><td>BOM de UTF-8, separador <code>;</code> y una fila por equipo</td></tr>
+<tr><td>Informe por equipo HTML</td><td>Ficha, totales, promedios, máximos e historial; hasta 500 reportes</td></tr>
+<tr><td>Informe por equipo CSV</td><td>Detalle completo, sin el límite de 500</td></tr>
+<tr><td>Escape de HTML</td><td>Organización y área con <code>&lt;script&gt;</code> se muestran escapadas, sin inyección</td></tr>
+<tr><td>Errores</td><td><code>/informe?tipo=equipo</code> sin ID devuelve 400; un ID inexistente devuelve 404</td></tr>
+<tr><td>Copia de la base real</td><td><code>Pc-002</code> y <code>PC 003</code> aparecen en el informe general; el informe de <code>Pc-002</code> incluye sus 32 reportes y el CSV conserva las 33 líneas con cabecera</td></tr>
+<tr><td>Manual</td><td>DOCX de 15 páginas y 3.332 palabras, con índice, encabezado y pie; PDF generado desde Word</td></tr>
+</tbody></table>
+<p>El cliente 1.0.2 sigue siendo compatible: el protocolo de inscripción, reportes y progreso no cambió. Las novedades de la 1.0.3 son del panel del servidor.</p>
+<hr>
+<h1>13. Comparación rápida entre versiones</h1>
+<table>
+<thead><tr><th>Área</th><th>Alpha</th><th>0.4.0</th><th>0.5.0</th><th>0.5.1</th></tr></thead>
+<tbody>
+<tr><td>Instalación</td><td>No</td><td>Sí, Inno Setup</td><td>Sí</td><td>Sí</td></tr>
+<tr><td>Arranque automático</td><td>No</td><td>Sí, 3 tareas</td><td>Sí</td><td>Sí</td></tr>
+<tr><td>Panel</td><td>No</td><td>Tkinter clásico</td><td>CustomTkinter, tema automático</td><td>Igual</td></tr>
+<tr><td>Historial</td><td>No</td><td>No</td><td>Sí, 30 días</td><td>Igual</td></tr>
+<tr><td>Suspensión / apagado</td><td>No</td><td>No</td><td>Sí</td><td>Igual</td></tr>
+<tr><td>Reporte semanal</td><td>No</td><td>No</td><td>Sí, HTML</td><td>Igual</td></tr>
+<tr><td>Aviso flotante</td><td>No</td><td>Notificación básica</td><td>Solo con panel abierto</td><td>Desde el servicio, con panel cerrado</td></tr>
+<tr><td>Prueba del aviso</td><td>No</td><td>No</td><td>No</td><td><code>--aviso</code></td></tr>
+<tr><td>Aprendizaje explicado</td><td>No</td><td>Parcial</td><td>«Aprendiendo»</td><td>Días y muestras restantes</td></tr>
+<tr><td>Retención de eventos</td><td>CSV</td><td>Sin tabla de eventos</td><td>400 días</td><td>400 días</td></tr>
+<tr><td>Límite del panel</td><td>—</td><td>3 días</td><td>3650 días</td><td>3650 días</td></tr>
+<tr><td>Pruebas en paralelo</td><td>—</td><td>Mutex fijo</td><td><code>SALUD_PC_MUTEX</code></td><td><code>SALUD_PC_MUTEX</code></td></tr>
+</tbody></table>
+<p>La 0.5.2 no cambió la interfaz: corrigió el momento en que se recalcula el baseline. Antes, el contador de aprendizaje podía quedar hasta seis horas atrasado; ahora se actualiza al arrancar (después de la primera muestra), al cambiar el día local y cada seis horas. En el equipo real el aprendizaje terminó a las 00:00:44 del 5 de noviembre, siete segundos después de la primera muestra del día.</p>
+<h2>13.1 Qué agregaron la 0.5.2 y la 0.5.3</h2>
+<table>
+<thead><tr><th>Área</th><th>0.5.2</th><th>0.5.3</th></tr></thead>
+<tbody>
+<tr><td>Baseline</td><td>Se refresca al arrancar, al cambiar el día y cada 6 h</td><td>Igual</td></tr>
+<tr><td>Consumo del agente</td><td>—</td><td>Cabecera cada 5 s, promedio de 5 min, servicio + panel</td></tr>
+<tr><td>Filtros del historial</td><td>—</td><td>Todos / Energía / Carga / Térmicas</td></tr>
+<tr><td>Episodios de pico</td><td>—</td><td>Evento <code>pico</code> desde 5 min, con inicio, fin y duración</td></tr>
+<tr><td>Atribución de procesos</td><td>—</td><td>Fuera de alcance</td></tr>
+<tr><td>Índice de estrés</td><td>—</td><td>Fuera de alcance</td></tr>
+</tbody></table>
+<hr>
+<h1>14. Qué funciona hoy con certeza y qué no</h1>
+<h2>14.1 Comprobado</h2>
+<ul>
+<li>La instalación 0.5.3 dejó el servicio, el panel, los datos y las tareas</li>
+</ul>
+<p>funcionando; Windows registra <code>DisplayVersion 0.5.3</code>.</p>
+<ul>
+<li>El servicio toma muestras y registra pausas (suspensiones y apagados).</li>
+<li>El baseline se genera solo y se refresca al arrancar, al cambiar el día y</li>
+</ul>
+<p>cada 6 horas.</p>
+<ul>
+<li>El aprendizaje terminó solo: 3 fechas locales y 1.127 muestras a las 00:00:44</li>
+</ul>
+<p>del 5 de noviembre; el baseline se refrescó después con 1.227 muestras.</p>
+<ul>
+<li>El baseline real tiene <code>aprendiendo: false</code> y seis métricas con valores.</li>
+<li>El panel abre solo y muestra estado, tarjetas, historial y filtros.</li>
+<li>El estado real es <code>ok</code> y las seis métricas están dentro de su límite.</li>
+<li>El servicio publica su consumo cada minuto y el panel lo suma al propio cada</li>
+</ul>
+<p>5 segundos; la cabecera no muestra «servicio sin datos».</p>
+<ul>
+<li>Los filtros Todos / Energía / Carga / Térmicas responden con los eventos</li>
+</ul>
+<p>reales; con solo eventos de energía, Carga y Térmicas muestran el mensaje vacío.</p>
+<ul>
+<li>El reporte semanal se genera; el del 5 de noviembre se actualizó a las 00:34.</li>
+<li>El aviso de prueba con el ejecutable instalado mostró la ventana durante 9</li>
+</ul>
+<p>segundos y cerró con código 0.</p>
+<ul>
+<li>El cliente operario 1.0.1 no se cierra al inscribir: pasa al panel de</li>
+</ul>
+<p>aprendizaje en la misma ventana, muestra «Sistema activo», el último envío y el avance real de muestras y días.</p>
+<ul>
+<li>El token del cliente se guarda en <code>%PROGRAMDATA%\SaludPC\Cliente\token_equipo.json</code></li>
+</ul>
+<p>y, al reabrir, el programa entra directo al panel.</p>
+<ul>
+<li>El servidor 1.0.1 responde <code>/progreso</code> con el token correcto y rechaza un</li>
+</ul>
+<p>token falso con <code>403</code>.</p>
+<ul>
+<li>El ejecutable instalado 1.0.1 se probó en el equipo servidor: abrió la</li>
+</ul>
+<p>pantalla de inscripción sin token y, con un token de demostración, mostró el panel con «Sistema activo», «1 de 300», «1 de 3» y «Aprendiendo · faltan 299 muestras y 2 día(s). El sistema está funcionando». El servidor registró el reporte y respondió <code>/progreso</code>.</p>
+<ul>
+<li>El cliente 1.0.2 muestra <strong>APRENDIENDO</strong> en «Estado actual» hasta que</li>
+</ul>
+<p><code>/progreso</code> confirma las 300 muestras y las 3 fechas locales; recién entonces pinta OK / ATENCIÓN / ACCIÓN.</p>
+<ul>
+<li>La casilla «No mostrar esta ventana al iniciar sesión» guarda</li>
+</ul>
+<p><code>mostrar_ventana_inicio</code> y el acceso directo de Inicio arranca con <code>--auto</code>. Con la preferencia en falso, el cliente quedó oculto y siguió enviando; una segunda apertura mostró la ventana de la instancia oculta y terminó sola.</p>
+<ul>
+<li>Cerrar con la X oculta la ventana; «Salir» detiene el monitoreo. El cliente</li>
+</ul>
+<p>oculto mantiene el envío cada 60 segundos.</p>
+<ul>
+<li>El servidor 1.0.2 fuerza <code>equipos.estado = en_aprendizaje</code> hasta completar</li>
+</ul>
+<p>300 muestras y 3 fechas locales. Un reporte con estado <code>accion</code> quedó como <code>en_aprendizaje</code> en el equipo y conservó <code>accion</code> en la tabla de reportes.</p>
+<ul>
+<li>Con 300 muestras en 3 fechas, <code>/progreso</code> devolvió <code>aprendizaje_completo=true</code></li>
+</ul>
+<p>y el estado visible pasó al estado real del reporte.</p>
+<ul>
+<li>Sobre una copia de la base real (<code>Pc-002</code>, 16 reportes y estado guardado</li>
+</ul>
+<p><code>ok</code>), el servidor 1.0.2 mostró <code>en_aprendizaje</code> en <code>/equipos</code> y en la portada, y el detalle conservó los 16 reportes. No fue necesario esperar un reporte nuevo ni modificar la base original.</p>
+<ul>
+<li>Los <code>.exe</code> empaquetados 1.0.2 (servidor y cliente) pasaron la prueba integral</li>
+</ul>
+<p>en una carpeta temporal: portada v1.0.2, inscripción, reporte, estado <code>en_aprendizaje</code>, inicio oculto y reapertura por segunda instancia.</p>
+<ul>
+<li>El servidor 1.0.3 busca por ID, organización, sede y área, y filtra por estado</li>
+</ul>
+<p>en la portada y en <code>/equipos</code>; el botón Actualizar quedó a la derecha junto al buscador.</p>
+<ul>
+<li>Los informes de la 1.0.3 se generan para todas las máquinas y para un equipo</li>
+</ul>
+<p>individual, en HTML imprimible y en CSV. El informe general no depende del filtro de la tabla; el informe por equipo incluye el historial completo en CSV.</p>
+<ul>
+<li>Las pruebas de la 1.0.3 incluyen escape de HTML, errores 400/404 y una copia de</li>
+</ul>
+<p>la base real con <code>Pc-002</code> (32 reportes) y <code>PC 003</code> (3 reportes).</p>
+<ul>
+<li>El manual de uso quedó en <code>MANUAL_DE_USO_SaludPC.docx</code> y</li>
+</ul>
+<p><code>MANUAL_DE_USO_SaludPC.pdf</code>, generados desde <code>MANUAL_DE_USO.md</code>.</p>
+<ul>
+<li>Los datos quedan en el equipo; la edición local no envía nada a Internet.</li>
+</ul>
+<h2>14.2 Pendiente de comprobar en el equipo real</h2>
+<ul>
+<li>Que aparezca un pico real y que el episodio guarde bien inicio, fin y</li>
+</ul>
+<p>duración. La lógica está probada en carpeta temporal, no con un pico real.</p>
+<ul>
+<li>Que los primeros avisos reales tengan sentido y no sean falsos positivos.</li>
+<li>El comportamiento durante una semana completa de uso normal.</li>
+<li>Revisar el reporte semanal y el historial cuando haya más eventos variados.</li>
+<li>Decidir si las tareas automáticas se registran para todos los usuarios o solo</li>
+</ul>
+<p>para el usuario que instala.</p>
+<ul>
+<li>Confirmar las tres tareas (Servicio, Panel y Vigia); su consulta requiere</li>
+</ul>
+<p>elevación.</p>
+<h2>14.3 Limitaciones conocidas</h2>
+<ul>
+<li>El instalador no está firmado; SmartScreen puede advertir.</li>
+<li>No hay actualización automática.</li>
+<li>No hay forma de silenciar los avisos.</li>
+<li>El reporte no se envía por correo en la edición local.</li>
+<li>El historial se puede filtrar por categoría, pero no exportar.</li>
+<li>El historial no atribuye un pico a un proceso; esa función queda para una</li>
+</ul>
+<p>etapa posterior.</p>
+<ul>
+<li>No hay índice de estrés; el diagnóstico sigue siendo un baseline estadístico.</li>
+<li>Si el panel queda abierto durante una actualización, el instalador puede pedir</li>
+</ul>
+<p>«Reintentar» por un archivo bloqueado. Se resolvió cerrando el panel; forzar el cierre automático queda como mejora.</p>
+<ul>
+<li>El instalador no borra los datos al desinstalar (decisión deliberada, para no</li>
+</ul>
+<p>perder el historial por accidente).</p>
+<ul>
+<li>No hay diagnóstico de por qué un equipo dejó de reportar; solo se ve el hueco.</li>
+<li>Las tareas <code>SaludPC Servicio</code> y <code>SaludPC Panel</code> no se pueden consultar sin</li>
+</ul>
+<p>elevación; <code>SaludPC Vigia</code> sí aparece.</p>
+<ul>
+<li>El panel de aprendizaje del cliente 1.0.1 necesita el servidor 1.0.1 para</li>
+</ul>
+<p>mostrar el avance real; contra un servidor 1.0.0 el cliente sigue enviando reportes, pero informa que el avance no está disponible.</p>
+<ul>
+<li>El «aprendizaje» empresarial es un conteo de 300 muestras y 3 fechas locales,</li>
+</ul>
+<p>no un baseline estadístico como el de la edición local. El cliente empresarial usa umbrales fijos (CPU &gt; 90 / RAM &gt; 95 para acción; CPU &gt; 80 / RAM &gt; 85 para atención).</p>
+<ul>
+<li>No hay alerta push, correo ni bandeja de alertas. El panel de TI muestra el</li>
+</ul>
+<p>último estado del equipo y se refresca cada 30 segundos; la tabla <code>avisos</code> existe pero no se usa desde el cliente gráfico.</p>
+<ul>
+<li>El transporte es HTTP sin cifrar. HMAC-SHA256 protege la integridad y la</li>
+</ul>
+<p>autenticidad del reporte, pero no impide que alguien lea el token o las métricas en la red local.</p>
+<ul>
+<li>La versión 1.0.3 del servidor está probada en código y contra una copia de la</li>
+</ul>
+<p>base real, pero todavía no se recompiló con PyInstaller ni se generó su instalador; el equipo servidor sigue con la 1.0.1 en el puerto 8443.</p>
+<ul>
+<li>El informe por equipo en HTML muestra hasta 500 reportes para que sea</li>
+</ul>
+<p>imprimible; el detalle completo solo está en el CSV.</p>
+<ul>
+<li>El manual de uso describe la 1.0.3; si se instala una versión anterior del</li>
+</ul>
+<p>servidor, el panel no tendrá buscador ni generador de informes.</p>
+<ul>
+<li>El arranque automático del cliente es al iniciar sesión (acceso directo en</li>
+</ul>
+<p><code>{commonstartup}</code>), no antes del login. No hay un servicio Windows real que recoja muestras con la sesión cerrada.</p>
+<ul>
+<li>El cliente operario envía <code>cpu_temp: null</code> porque no usa sensores de</li>
+</ul>
+<p>temperatura; el resto de métricas son CPU, RAM y disco.</p>
+<ul>
+<li>Los logs están en UTF-8 y PowerShell 5.1 los muestra con caracteres raros; no</li>
+</ul>
+<p>es un fallo del programa.</p>
+<hr>
+<h1>15. Decisiones que explican el diseño actual</h1>
+<p>Estas decisiones no son detalles internos: son la razón por la que el producto se comporta como se comporta.</p>
+<p class="num"><span class="num-n">1.</span> <strong>Solo diagnóstico y prevención, nunca reparación.</strong> El programa no cambia</p>
+<p>configuraciones, no borra archivos, no reinicia servicios ajenos y no “arregla” nada. Avisa para que una persona decida.</p>
+<p class="num"><span class="num-n">2.</span> <strong>Trabajar dentro de la sesión del usuario, sin botón “iniciar”.</strong> La</p>
+<p>instalación deja todo funcionando; el usuario no tiene que acordarse de abrir nada.</p>
+<p class="num"><span class="num-n">3.</span> <strong>Una muestra por minuto, 90 días de detalle y resumen diario permanente.</strong></p>
+<p>Es suficiente para ver tendencias sin llenar el disco.</p>
+<p class="num"><span class="num-n">4.</span> <strong>Aprender antes de avisar.</strong> Tres días y 300 muestras como mínimo. Evita</p>
+<p>falsos positivos y explica por qué al principio no hay alertas.</p>
+<p class="num"><span class="num-n">5.</span> <strong>Umbrales con pisos sanos y techos absolutos.</strong> El baseline no puede</p>
+<p>declarar “normal” un valor peligroso. Tres de cinco muestras para Amarillo, dos de cinco para Rojo.</p>
+<p class="num"><span class="num-n">6.</span> <strong>Un solo lugar para las métricas: <code>metricas.py</code>.</strong> Evita que cada módulo</p>
+<p>invente sensores o unidades distintas.</p>
+<p class="num"><span class="num-n">7.</span> <strong>Datos bajo control del usuario.</strong> Todo local, sin envío a Internet sin una</p>
+<p>acción explícita.</p>
+<p class="num"><span class="num-n">8.</span> <strong>Aviso propio en vez de notificación del sistema.</strong> Una ventana de la</p>
+<p>aplicación se ve igual en todos los equipos y no depende de que Windows silencie o agrupe notificaciones.</p>
+<p class="num"><span class="num-n">9.</span> <strong>El servicio avisa, el panel muestra.</strong> Separar responsabilidades evita</p>
+<p>duplicados y permite avisar con la ventana cerrada.</p>
+<p class="num"><span class="num-n">10.</span> <strong>No borrar datos al desinstalar.</strong> Es preferible dejar el historial a que</p>
+<p>una desinstalación accidental lo destruya.</p>
+<p class="num"><span class="num-n">11.</span> <strong>Cada proceso mide su propio consumo.</strong> El servicio no intenta leer el</p>
+<p>panel ni el panel el servicio elevado: el servicio publica un JSON chico y el panel lo suma. Evita permisos y acoplamiento.</p>
+<p class="num"><span class="num-n">12.</span> <strong>Un pico es un episodio, no una foto.</strong> Se guarda solo si duró 5 minutos o</p>
+<p>más; un episodio abierto que quedó huérfano más de 15 minutos se descarta para no inventar una duración.</p>
+<p class="num"><span class="num-n">13.</span> <strong>El historial se filtra por categorías cerradas.</strong> Energía, carga y</p>
+<p>térmicas; un evento sin métrica reconocible cae en carga y no se pierde.</p>
+<hr>
+<h1>16. Edición empresarial: servidor central y cliente operario</h1>
+<p>La edición empresarial <strong>está implementada y probada</strong>. Estas son las decisiones tomadas y lo que se construyó.</p>
+<h2>16.1 Alcance</h2>
+<ul>
+<li><strong>Un solo ejecutable con dos modos</strong>: edición local y edición empresarial.</li>
+<li><strong>Panel de TI completo desde el inicio</strong>, no una versión mínima.</li>
+<li><strong>Receptor on-premise</strong>: los datos quedan en la infraestructura del hospital.</li>
+<li><strong>Receptor para Windows Server y Linux.</strong></li>
+<li><strong>SQLite para el piloto</strong>, con diseño compatible con PostgreSQL para crecer.</li>
+<li><strong>Credencial híbrida</strong>: una clave de organización para inscribir equipos y un</li>
+</ul>
+<p>token único por equipo.</p>
+<ul>
+<li><strong>HTTPS/TLS</strong>, token por equipo y firma HMAC-SHA256.</li>
+<li><strong>Lista cerrada de campos técnicos</strong>: CPU, memoria, disco, temperaturas y</li>
+</ul>
+<p>estado del agente. Sin actividad personal, datos de pacientes ni nombres de procesos.</p>
+<ul>
+<li><strong>Retransmisor local opcional</strong> para redes con salida restringida.</li>
+<li><strong>Correo de aviso</strong> que solo informa que hay un resumen disponible; no adjunta</li>
+</ul>
+<p>detalles.</p>
+<ul>
+<li><strong>Estados de equipo</strong>: al día, atrasado, sin reportar, nunca reportó, en</li>
+</ul>
+<p>aprendizaje y requiere revisión. La distinción entre «sin datos» y «saludable» es obligatoria: un equipo que dejó de reportar no es un equipo sano.</p>
+<h2>16.2 Lo que el hospital puede hacer</h2>
+<ul>
+<li>Registrar un equipo con ID y organización, sede y área.</li>
+<li>Definir horarios de recolección y envío.</li>
+<li>Ver tendencias, alertas, último reporte y equipos que dejaron de reportar.</li>
+<li>Autorizar el despliegue de forma transparente.</li>
+<li>Saber qué datos se recogen y cuáles no.</li>
+</ul>
+<h2>16.3 Lo que la edición empresarial no promete</h2>
+<ul>
+<li>No garantiza evitar fallas.</li>
+<li>No reemplaza los procedimientos técnicos ni clínicos del hospital.</li>
+<li>No diagnostica pacientes ni procesa datos clínicos.</li>
+<li>No funciona como herramienta de vigilancia de personas.</li>
+</ul>
+<h2>16.4 Documentos de referencia</h2>
+<ul>
+<li><code>VISION_EDICIONES.md</code>: arquitectura y alcance de las dos ediciones.</li>
+<li><code>PROTOCOLO_EMPRESARIAL.md</code>: inscripción, reportes, firma, estados, modelo de</li>
+</ul>
+<p>datos, configuración, retransmisor, correo y pruebas.</p>
+<hr>
+<h1>17. Qué sigue después de la mejora</h1>
+<p>El orden importa: la edición local está cerrada y funcionando; la empresarial está implementada y en piloto.</p>
+<h2>17.1 Inmediato: cerrar el ciclo básico</h2>
+<p>Estado al 5 de noviembre:</p>
+<p class="num"><span class="num-n">1.</span> <strong>Instalar la 0.5.3</strong> y aceptar el UAC una sola vez. Hecho el 5 de noviembre</p>
+<p>alrededor de las 01:50; conservó datos y baseline.</p>
+<p class="num"><span class="num-n">2.</span> <strong>Comprobar que el servicio publica su consumo</strong> en</p>
+<p><code>consumo_servicio.json</code>. Hecho; el archivo se actualiza cada minuto.</p>
+<p class="num"><span class="num-n">3.</span> <strong>Comprobar que el panel suma servicio y panel</strong> y actualiza la cabecera cada</p>
+<p>5 segundos. Hecho en el panel de desarrollo con datos reales.</p>
+<p class="num"><span class="num-n">4.</span> <strong>Probar los filtros</strong> Todos / Energía / Carga / Térmicas. Hecho; con los</p>
+<p>eventos actuales solo Energía tiene contenido.</p>
+<p class="num"><span class="num-n">5.</span> <strong>Observar un pico real</strong>. Pendiente; todavía no hubo uno. La lógica se</p>
+<p>probó en una carpeta temporal, sin tocar la base real.</p>
+<p class="num"><span class="num-n">6.</span> <strong>Confirmar que las tres tareas siguen activas</strong> (Servicio, Panel y Vigia).</p>
+<p>Pendiente: las tareas Servicio y Panel requieren elevación para consultarlas.</p>
+<p class="num"><span class="num-n">7.</span> <strong>Revisar los primeros avisos reales</strong> y ajustar umbrales si aparecen falsos</p>
+<p>positivos. Próximo paso; todavía no hubo un aviso real.</p>
+<h2>17.2 Corto plazo: pulir la edición local</h2>
+<ul>
+<li>Evaluar la firma de código para reducir las advertencias de SmartScreen.</li>
+<li>Agregar un botón para silenciar avisos.</li>
+<li>Permitir exportar el historial (los filtros ya están).</li>
+<li>Forzar el cierre de cualquier <code>SaludPC.exe</code> durante la instalación para evitar</li>
+</ul>
+<p>el archivo bloqueado que obligó a pulsar «Reintentar».</p>
+<ul>
+<li>Evaluar actualización automática.</li>
+<li>Hacer una prueba de una semana completa y registrar los resultados en esta</li>
+</ul>
+<p>bitácora.</p>
+<ul>
+<li>Atribuir picos a procesos y evaluar un índice de estrés en una etapa</li>
+</ul>
+<p>posterior, sin incluirlos en la 0.5.3.</p>
+<h2>17.3 Después: consolidar la edición empresarial</h2>
+<p>La edición empresarial ya está implementada y probada. Los próximos pasos son:</p>
+<p class="num"><span class="num-n">1.</span> <strong>Instalar la 1.0.2</strong> en el servidor central y en el equipo operario;</p>
+<p>comprobar que el panel muestra «APRENDIENDO», que la casilla de inicio oculto persiste y que el cliente sigue enviando con la ventana cerrada.</p>
+<p class="num"><span class="num-n">2.</span> <strong>Portar el baseline estadístico</strong> de la edición local 0.5.3 al servidor</p>
+<p>empresarial (p95/p99, pisos y techos, 3 de 5 muestras para amarillo y 2 de 5 para rojo), en lugar de los umbrales fijos actuales.</p>
+<p class="num"><span class="num-n">3.</span> <strong>Agregar una bandeja de alertas</strong> con estados, confirmación y correo</p>
+<p>opcional; usar la tabla <code>avisos</code> que ya existe.</p>
+<p class="num"><span class="num-n">4.</span> <strong>Implementar HTTPS</strong> con certificado autofirmado y pinning para el piloto;</p>
+<p>migrar a CA interna del hospital para producción.</p>
+<p class="num"><span class="num-n">5.</span> <strong>Evaluar mTLS y el retransmisor local</strong> para redes con salida restringida.</p>
+<p class="num"><span class="num-n">6.</span> <strong>Piloto controlado</strong> con pocos equipos de un área, y luego un hospital.</p>
+<p class="num"><span class="num-n">7.</span> <strong>Revisión de seguridad, privacidad, retención y auditoría</strong> antes de escalar.</p>
+<p class="num"><span class="num-n">8.</span> <strong>Evaluar actualización automática</strong> para los agentes.</p>
+<h2>17.4 Decisión tomada para el receptor</h2>
+<p>Se eligió <strong>HTTP directo en la aplicación</strong> sin proxy intermedio para la fase piloto. El servidor escucha en el puerto 8443 y se puede acceder desde cualquier equipo de la red local. Para producción se puede agregar TLS/SSL y un proxy inverso (nginx) si la infraestructura lo requiere.</p>
+<hr>
+<h1>18. Riesgos y cosas a vigilar</h1>
+<ul>
+<li><strong>Falsos positivos al terminar el aprendizaje.</strong> Los primeros días de alertas</li>
+</ul>
+<p>reales son los más importantes para calibrar.</p>
+<ul>
+<li><strong>Equipos que dejan de reportar.</strong> En la edición empresarial hay que</li>
+</ul>
+<p>distinguir «sin datos» de «saludable»; en la local, el hueco se ve en el historial pero no se diagnostica.</p>
+<ul>
+<li><strong>Servicio detenido.</strong> Sin servicio no hay muestras ni avisos.</li>
+<li><strong>Advertencia de SmartScreen.</strong> Es esperable mientras el instalador no esté</li>
+</ul>
+<p>firmado.</p>
+<ul>
+<li><strong>Datos sensibles en el hospital.</strong> La lista cerrada de campos técnicos y la</li>
+</ul>
+<p>ausencia de datos de pacientes son requisitos, no recomendaciones.</p>
+<ul>
+<li><strong>Crecimiento de la base.</strong> SQLite alcanza para el piloto; PostgreSQL debe</li>
+</ul>
+<p>estar previsto antes de escalar.</p>
+<ul>
+<li><strong>Pruebas en el equipo real.</strong> El servicio regenera el baseline al arrancar,</li>
+</ul>
+<p>así que no se puede inyectar un baseline falso para probar estados. Las pruebas válidas requieren datos reales o un entorno separado con <code>SALUD_PC_DATOS</code>.</p>
+<ul>
+<li><strong>Consumo del agente no es consumo del equipo.</strong> La línea informa CPU y</li>
+</ul>
+<p>memoria del servicio y del panel; no atribuye el consumo a otros procesos.</p>
+<ul>
+<li><strong>Episodios descartados.</strong> Si el servicio estuvo detenido más de 15 minutos,</li>
+</ul>
+<p>un episodio abierto se descarta para no inventar una duración.</p>
+<ul>
+<li><strong>Filtros por categoría.</strong> Un evento sin métrica reconocible cae en Carga; no</li>
+</ul>
+<p>se pierde, pero puede no ser el filtro que el usuario espera.</p>
+<hr>
+<h1>19. Archivos importantes</h1>
+<table>
+<thead><tr><th>Archivo</th><th>Para qué sirve</th></tr></thead>
+<tbody>
+<tr><td><code>app.py</code></td><td>Servicio, argumentos, aviso, reporte, vigía</td></tr>
+<tr><td><code>main.py</code></td><td>Panel, pestañas, filtros, aviso flotante</td></tr>
+<tr><td><code>agente.py</code></td><td>Medición y publicación del consumo del servicio y del panel</td></tr>
+<tr><td><code>almacen.py</code></td><td>SQLite, muestras, resumen diario, eventos</td></tr>
+<tr><td><code>eventos.py</code></td><td>Pausas, categorías, episodios de pico y estado de aviso</td></tr>
+<tr><td><code>vigilante.py</code></td><td>Diagnóstico y mensaje de aprendizaje</td></tr>
+<tr><td><code>reportes.py</code></td><td>Reporte semanal HTML</td></tr>
+<tr><td><code>metricas.py</code></td><td>Definición única de métricas y umbrales</td></tr>
+<tr><td><code>rutas.py</code></td><td>Rutas de datos y recursos</td></tr>
+<tr><td><code>empaquetado/instalador.iss</code></td><td>Instalador Inno Setup</td></tr>
+<tr><td><code>empaquetado/construir.ps1</code></td><td>Compilación completa</td></tr>
+<tr><td><code>empaquetado/instalar_tareas.ps1</code></td><td>Tareas programadas</td></tr>
+<tr><td><code>DOCUMENTACION_CAMBIOS.md</code></td><td>Cambios 0.4.0 → 0.5.3, motivos y vacíos</td></tr>
+<tr><td><code>VISION_EDICIONES.md</code></td><td>Arquitectura de las dos ediciones</td></tr>
+<tr><td><code>PROTOCOLO_EMPRESARIAL.md</code></td><td>Protocolo de inscripción y reportes</td></tr>
+<tr><td><code>README.md</code></td><td>Uso, privacidad y comandos</td></tr>
+<tr><td><code>tests/test_agente.py</code></td><td>Prueba del consumo y frescura del JSON</td></tr>
+<tr><td><code>tests/test_episodios.py</code></td><td>Prueba de categorías y episodios de pico</td></tr>
+<tr><td><code>tests/test_contador_dias.py</code></td><td>Prueba del contador con 2 y 3 fechas</td></tr>
+<tr><td><code>tests/test_modelo_simulado.py</code></td><td>Prueba aislada del modelo completo</td></tr>
+<tr><td><code>config_usuario.py</code></td><td>Preferencias del usuario (mostrar/ocultar ventana al iniciar)</td></tr>
+<tr><td><code>servidor_central.py</code></td><td>Servidor central de SaludPC Enterprise (receptor de reportes)</td></tr>
+<tr><td><code>cliente_enterprise.py</code></td><td>Librería cliente (inscripción, envío de reportes, firma HMAC)</td></tr>
+<tr><td><code>cliente_gui.py</code></td><td>Interfaz gráfica del cliente operario</td></tr>
+<tr><td><code>construir_servidor.ps1</code></td><td>Script de compilación del servidor central</td></tr>
+<tr><td><code>construir_cliente.ps1</code></td><td>Script de compilación del cliente operario</td></tr>
+<tr><td><code>instalador_servidor.iss</code></td><td>Script Inno Setup del instalador del servidor</td></tr>
+<tr><td><code>instalador_cliente.iss</code></td><td>Script Inno Setup del instalador del cliente</td></tr>
+</tbody></table>
+<hr>
+<h1>20. Cierre</h1>
+<p>La edición local pasó de ser una prueba de concepto a un producto que se instala, aprende y avisa. Tiene límites conocidos y cosas por pulir, pero el camino recorrido está claro: primero se demostró que se podían leer los sensores; después se hizo instalable; luego se volvió comprensible; se corrigió el aviso para que no dependiera de que el usuario estuviera mirando la pantalla; se corrigió el contador para que el aprendizaje termine solo; y ahora el panel informa el consumo del agente, filtra el historial y guarda los picos como episodios. Además, la edición empresarial está implementada: un servidor central con panel de TI y un cliente operario con interfaz gráfica permiten inscribir equipos y enviar reportes firmados desde cualquier computadora de la red. La versión 1.0.1 corrigió el cierre inesperado del cliente al inscribir y agregó un panel de aprendizaje que muestra, con datos reales del servidor, que el equipo está aprendiendo y reportando. La versión 1.0.2 completó ese panel: muestra APRENDIENDO hasta que la línea base está lista, permite ocultar la ventana al iniciar sesión sin detener el envío, reabre la ventana con una segunda instancia y hace que el servidor no marque OK a un equipo que todavía está aprendiendo. La versión 1.0.3 llevó el panel de TI al trabajo diario: buscador por equipo, organización, sede o área; filtro por estado; botón Actualizar junto al buscador; e informes generales y por equipo en HTML o CSV. El manual de uso reúne todo lo necesario para instalar, operar e interpretar el programa.</p>
+<p>Lo que sigue no es rehacer lo hecho, sino consolidarlo: recompilar e instalar el servidor 1.0.3 y el cliente 1.0.2 en los equipos reales, revisar los primeros avisos reales, observar un pico real y completar una semana de uso normal. Con esa base estable, la siguiente fase es portar el baseline estadístico de la 0.5.3 a la edición empresarial, agregar una bandeja de alertas con correo opcional e implementar HTTPS con certificado autofirmado y pinning.</p>
+
+</body>
+</html>

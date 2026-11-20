@@ -1,0 +1,111 @@
+"""Vigía de una sola ejecución; prográmese en el Programador de tareas cada 5 min."""
+
+import json
+import os
+import sqlite3
+import subprocess
+import sys
+from datetime import datetime
+from pathlib import Path
+
+
+# Ajustables mediante variables de entorno si la instalación usa otros nombres.
+DB_PATH = Path(os.environ.get("SALUDPC_DB", Path(__file__).with_name("SaludPC.db")))
+LATEST_SAMPLE_SQL = os.environ.get(
+	"SALUDPC_LATEST_SQL", "SELECT MAX(fecha) FROM muestras"
+)
+SERVICE_SCRIPT = Path(
+	os.environ.get("SALUDPC_SERVICE_SCRIPT", Path(__file__).with_name("SaludPC.py"))
+)
+FRESH_SAMPLE_SECONDS = 10 * 60
+NEW_SERVICE_GRACE_SECONDS = 3 * 60
+
+
+def latest_sample_age_seconds():
+	# MAX() consulta la última marca temporal, sin recorrer las muestras desde Python.
+	uri = DB_PATH.resolve().as_uri() + "?mode=ro"
+	with sqlite3.connect(uri, uri=True, timeout=10) as db:
+		value = db.execute(LATEST_SAMPLE_SQL).fetchone()[0]
+
+	if value is None:
+		return None
+	if isinstance(value, (int, float)):
+		sample_time = datetime.fromtimestamp(value)
+	else:
+		text = str(value).strip()
+		try:
+			sample_time = datetime.fromisoformat(text.replace("Z", "+00:00"))
+		except ValueError:
+			sample_time = datetime.strptime(text, "%Y-%m-%d %H:%M:%S")
+	if sample_time.tzinfo is not None:
+		sample_time = sample_time.astimezone().replace(tzinfo=None)
+	return (datetime.now() - sample_time).total_seconds()
+
+
+def service_processes():
+	# CIM proporciona PID, línea de comandos y hora de creación de cada proceso.
+	script = (
+		"$ErrorActionPreference='Stop'; "
+		"Get-CimInstance Win32_Process | "
+		"Where-Object { $_.CommandLine -match '(?i)(^|\\s)--servicio(\\s|$)' } | "
+		"ForEach-Object { [pscustomobject]@{ "
+		"Pid=$_.ProcessId; Age=(New-TimeSpan -Start $_.CreationDate "
+		"-End (Get-Date)).TotalSeconds } } | ConvertTo-Json -Compress"
+	)
+	result = subprocess.run(
+		["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", script],
+		capture_output=True,
+		text=True,
+		check=True,
+		creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+	)
+	output = result.stdout.strip()
+	if not output:
+		return []
+	processes = json.loads(output)
+	return processes if isinstance(processes, list) else [processes]
+
+
+def start_service():
+	if not SERVICE_SCRIPT.is_file():
+		raise FileNotFoundError(f"No se encontró el servicio: {SERVICE_SCRIPT}")
+	subprocess.Popen(
+		[sys.executable, str(SERVICE_SCRIPT), "--servicio"],
+		cwd=str(SERVICE_SCRIPT.parent),
+		close_fds=True,
+	)
+
+
+def main():
+	age = latest_sample_age_seconds()
+	if age is not None and age < FRESH_SAMPLE_SECONDS:
+		return
+
+	processes = service_processes()
+	if not processes:
+		start_service()
+		return
+	if any(float(process["Age"]) <= NEW_SERVICE_GRACE_SECONDS for process in processes):
+		return
+
+	for process in processes:
+		subprocess.run(
+			[
+				"powershell.exe",
+				"-NoProfile",
+				"-NonInteractive",
+				"-Command",
+				f"Stop-Process -Id {int(process['Pid'])} -Force",
+			],
+			check=True,
+			capture_output=True,
+			creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+		)
+	start_service()
+
+
+if __name__ == "__main__":
+	try:
+		main()
+	except Exception as error:
+		print(f"SaludPC Vigía: {error}", file=sys.stderr)
