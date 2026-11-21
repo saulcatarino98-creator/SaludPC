@@ -9,6 +9,13 @@ import almacen
 import metricas
 import rutas
 import tendencias
+from tendencias import (
+    calcular_pendiente_con_confianza,
+    prediccion_multi_horizonte,
+    detectar_patron,
+    calcular_score_riesgo,
+    analisis_predictivo_completo,
+)
 
 DIRECTORIO = rutas.carpeta_datos()
 
@@ -60,13 +67,14 @@ MENSAJES = {
 }
 
 
-def salida(estado, mensaje, detalles=None, ultima=None):
+def salida(estado, mensaje, detalles=None, ultima=None, riesgo=None):
     return {
         "estado": estado,
         "color": COLORES[estado],
         "mensaje": mensaje,
         "detalles": detalles or [],
         "ultima_lectura": ultima.isoformat() if ultima else None,
+        "riesgo": riesgo,
     }
 
 
@@ -180,25 +188,32 @@ def diagnosticar(directorio=None, ahora=None):
         aviso, rojo = limite_para(entrada, ahora_local)
         estado = estado_metrica(valores, aviso, rojo)
 
-        # ---- Análisis predictivo por tendencia térmica ----
-        if metrica in ("cpu_temp", "gpu_temp", "disk_temp"):
-            prefijo = metrica.split("_")[0]  # cpu, gpu, disk
-            metrica_trend = f"temp_trend_{prefijo}"
-            pendiente_actual = float(entrada.get("pendiente") or 0.0)
-            umbral_trend = metricas.PISOS_AVISO.get(metrica_trend)
-            if umbral_trend is not None and pendiente_actual > 0:
-                minutos_proj = tendencias.minutos_a_umbral(
-                    valores[-1], pendiente_actual, rojo
-                )
-                if minutos_proj is not None and minutos_proj <= 30:
-                    if estado == "ok":
-                        estado = "atencion"
-                    detalles_extra = {
-                        "pendiente": round(pendiente_actual, 3),
-                        "proyectado_min": round(minutos_proj, 1),
-                    }
-                    if detalles and detalles[-1]["metrica"] == metrica:
-                        detalles[-1].update(detalles_extra)
+        # ---- Análisis predictivo avanzado ----
+        # Obtenemos tiempos para calcular tendencia con confianza
+        desde = (ahora - timedelta(hours=6)).isoformat(timespec="seconds")
+        tiempos_metrica = []
+        for ts, met, valor, _ in almacen.leer(desde=desde):
+            if met == metrica:
+                try:
+                    tiempos_metrica.append(datetime.fromisoformat(ts))
+                except ValueError:
+                    continue
+        tiempos_metrica.sort()
+
+        pred = analisis_predictivo_completo(
+            valores, tiempos_metrica, aviso, rojo, valor_actual=valores[-1]
+        )
+
+        pendiente = pred["pendiente"]
+        confianza = pred["confianza_r2"]
+
+        # Si hay alarma predictiva inmediata, elevamos estado
+        if pred["alarma_predictiva_inmediata"]:
+            if estado == "ok":
+                estado = "atencion"
+
+        # Detectar patrones de riesgo
+        patrones = pred["patrones"]
 
         detalles.append(
             {
@@ -209,6 +224,13 @@ def diagnosticar(directorio=None, ahora=None):
                 "ultimo": valores[-1],
                 "limite_aviso": aviso,
                 "limite_rojo": rojo,
+                "pendiente": pendiente,
+                "confianza": confianza,
+                "minutos_a_aviso": pred["minutos_a_aviso"],
+                "minutos_a_rojo": pred["minutos_a_rojo"],
+                "horizonte": pred["horizonte"],
+                "patrones": patrones,
+                "alarma_predictiva": pred["alarma_predictiva_inmediata"],
             }
         )
         if ORDEN[estado] > ORDEN[peor]:
@@ -217,21 +239,36 @@ def diagnosticar(directorio=None, ahora=None):
     if not detalles:
         return salida("sin_datos", "No pudimos leer los sensores de este equipo.")
 
+    # ---- Score de riesgo global del equipo ----
+    riesgo = calcular_score_riesgo(detalles)
+
     if peor == "ok":
-        return salida(
-            "ok", "Todo se ve dentro de lo normal para tu equipo.", detalles, ultima
+        mensaje_base = "Todo se ve dentro de lo normal para tu equipo."
+    else:
+        problemas = [d for d in detalles if d["estado"] == peor]
+        metrica_peor = problemas[0]["metrica"]
+        titulo, consejo = MENSAJES.get(
+            metrica_peor,
+            (
+                f"{metricas.NOMBRES.get(metrica_peor, metrica_peor)} está fuera de lo normal.",
+                "Revisá el valor y el historial del equipo.",
+            ),
+        )
+        mensaje_base = f"{titulo} {consejo}"
+
+    # Agregar información de riesgo global al mensaje si es medio o superior
+    if riesgo["nivel"] in ("alto", "critico"):
+        mensaje_base += (
+            f" Score de riesgo del equipo: {riesgo['score']}/100 ({riesgo['nivel']})."
         )
 
-    problemas = [detalle for detalle in detalles if detalle["estado"] == peor]
-    metrica_peor = problemas[0]["metrica"]
-    titulo, consejo = MENSAJES.get(
-        metrica_peor,
-        (
-            f"{metricas.NOMBRES.get(metrica_peor, metrica_peor)} está fuera de lo normal.",
-            "Revisá el valor y el historial del equipo.",
-        ),
+    return salida(
+        peor,
+        mensaje_base,
+        detalles,
+        ultima,
+        riesgo=riesgo,
     )
-    return salida(peor, f"{titulo} {consejo}", detalles, ultima)
 
 
 if __name__ == "__main__":
