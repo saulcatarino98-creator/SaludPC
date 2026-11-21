@@ -600,7 +600,7 @@ class Ventana:
             prediccion, corner_radius=16, fg_color=TARJETA,
             border_width=1, border_color=BORDE,
         )
-        self.frame_metricas_pred.pack(fill="x", padx=16, pady=(0, 14))
+        self.frame_metricas_pred.pack(fill="both", expand=True, padx=16, pady=(0, 14))
 
         ctk.CTkLabel(
             self.frame_metricas_pred,
@@ -611,9 +611,9 @@ class Ventana:
         ).pack(fill="x", padx=18, pady=(14, 8))
 
         self.scroll_metricas_pred = ctk.CTkScrollableFrame(
-            self.frame_metricas_pred, fg_color="transparent", height=220
+            self.frame_metricas_pred, fg_color="transparent",
         )
-        self.scroll_metricas_pred.pack(fill="x", padx=16, pady=(0, 14))
+        self.scroll_metricas_pred.pack(fill="both", expand=True, padx=16, pady=(0, 14))
 
         # Tarjetas de predicción por métrica térmica
         for indice, metrica in enumerate(("cpu_temp", "gpu_temp", "disk_temp")):
@@ -667,7 +667,7 @@ class Ventana:
             prediccion, corner_radius=16, fg_color=TARJETA,
             border_width=1, border_color=BORDE,
         )
-        self.frame_patrones.pack(fill="x", padx=16, pady=(0, 16))
+        self.frame_patrones.pack(fill="both", expand=True, padx=16, pady=(0, 16))
 
         ctk.CTkLabel(
             self.frame_patrones,
@@ -678,9 +678,9 @@ class Ventana:
         ).pack(fill="x", padx=18, pady=(14, 8))
 
         self.scroll_patrones = ctk.CTkScrollableFrame(
-            self.frame_patrones, fg_color="transparent", height=130
+            self.frame_patrones, fg_color="transparent",
         )
-        self.scroll_patrones.pack(fill="x", padx=16, pady=(0, 14))
+        self.scroll_patrones.pack(fill="both", expand=True, padx=16, pady=(0, 14))
 
     def _crear_pie(self):
         pie = ctk.CTkFrame(self.raiz, fg_color="transparent")
