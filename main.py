@@ -372,6 +372,15 @@ class Ventana:
         )
         self.subtitulo.grid(row=2, column=0, sticky="w", pady=(2, 0))
 
+        self.riesgo_score = ctk.CTkLabel(
+            encabezado,
+            text="Score de riesgo: —",
+            font=self.fuente_pie,
+            text_color=SUAVE,
+            anchor="w",
+        )
+        self.riesgo_score.grid(row=3, column=0, sticky="w", pady=(2, 0))
+
     def _crear_pestanas(self):
         self.pestanas = ctk.CTkTabview(
             self.raiz,
@@ -639,6 +648,38 @@ class Ventana:
         self.titulo_estado.configure(text=ETIQUETAS.get(estado, "Sin datos"))
         self.mensaje_estado.configure(text=self.ultimo["mensaje"])
 
+        # ---- Score de riesgo global ----
+        riesgo = self.ultimo.get("riesgo")
+        if riesgo:
+            color_riesgo = {
+                "bajo": ESTADO_COLOR["ok"],
+                "medio": ESTADO_COLOR["atencion"],
+                "alto": ESTADO_COLOR["atencion"],
+                "critico": ESTADO_COLOR["accion"],
+            }.get(riesgo["nivel"], SUAVE)
+            self.riesgo_score.configure(
+                text=(
+                    f"Score de riesgo: {riesgo['score']}/100  "
+                    f"({riesgo['nivel'].upper()})"
+                ),
+                text_color=color_riesgo,
+            )
+        else:
+            self.riesgo_score.configure(
+                text="Score de riesgo: —", text_color=SUAVE
+            )
+
+        # ---- Indicador de alarma predictiva inmediata ----
+        detalles = self.ultimo.get("detalles", [])
+        alarma_pred = any(
+            d.get("alarma_predictiva") for d in detalles
+        )
+        if alarma_pred and estado == "ok":
+            self.titulo_estado.configure(
+                text="⚠️ Alerta predictiva",
+                text_color=ESTADO_COLOR["atencion"],
+            )
+
     def _pintar_tarjetas(self):
         detalles = {
             dato["metrica"]: dato
@@ -673,10 +714,39 @@ class Ventana:
                     widgets["barra"].configure(
                         progress_color=ESTADO_COLOR[estado_actual]
                     )
+                    # ---- Información de predictibilidad en vivo ----
+                    tendencia_txt = ""
+                    if metrica in ("cpu_temp", "gpu_temp", "disk_temp"):
+                        pendiente = dato.get("pendiente", 0) or 0
+                        confianza = dato.get("confianza", 0) or 0
+                        minutos_aviso = dato.get("minutos_a_aviso")
+                        minutos_rojo = dato.get("minutos_a_rojo")
+                        patrones = dato.get("patrones", [])
+
+                        if abs(pendiente) > 0.01 and confianza > 0.3:
+                            direccion = "subiendo" if pendiente > 0 else "bajando"
+                            tendencia_txt = (
+                                f" · {direccion} {abs(pendiente):.2f}{unidad}/min"
+                                f" (confianza {confianza:.0%})"
+                            )
+
+                        if minutos_rojo is not None and minutos_rojo <= 30:
+                            tendencia_txt += f" · ⚠️ Riesgo en ~{minutos_rojo:.0f} min"
+                        elif minutos_aviso is not None and minutos_aviso <= 30:
+                            tendencia_txt += f" · ⚠️ Aviso en ~{minutos_aviso:.0f} min"
+
+                        if patrones:
+                            tipos = [p["tipo"] for p in patrones]
+                            if "tendencia_al_alta" in tipos:
+                                tendencia_txt += " · Tendencia al alza"
+                            if "subida_repentina" in tipos:
+                                tendencia_txt += " · Subida repentina"
+
                     widgets["pie"].configure(
                         text=(
                             f"en vivo · normal hasta "
                             f"{texto_valor(limite_aviso, unidad)}"
+                            f"{tendencia_txt}"
                         )
                     )
                 else:
@@ -701,10 +771,39 @@ class Ventana:
                         dato["estado"], ESTADO_COLOR["sin_datos"]
                     )
                 )
+                # ---- Información de predictibilidad (pendiente y tiempo a umbral) ----
+                tendencia_txt = ""
+                if metrica in ("cpu_temp", "gpu_temp", "disk_temp"):
+                    pendiente = dato.get("pendiente", 0) or 0
+                    confianza = dato.get("confianza", 0) or 0
+                    minutos_aviso = dato.get("minutos_a_aviso")
+                    minutos_rojo = dato.get("minutos_a_rojo")
+                    patrones = dato.get("patrones", [])
+
+                    if abs(pendiente) > 0.01 and confianza > 0.3:
+                        direccion = "subiendo" if pendiente > 0 else "bajando"
+                        tendencia_txt = (
+                            f"· {direccion} {abs(pendiente):.2f}{unidad}/min"
+                            f" (confianza {confianza:.0%})"
+                        )
+
+                    if minutos_rojo is not None and minutos_rojo <= 30:
+                        tendencia_txt += f" · ⚠️ Riesgo en ~{minutos_rojo:.0f} min"
+                    elif minutos_aviso is not None and minutos_aviso <= 30:
+                        tendencia_txt += f" · ⚠️ Aviso en ~{minutos_aviso:.0f} min"
+
+                    if patrones:
+                        tipos = [p["tipo"] for p in patrones]
+                        if "tendencia_al_alta" in tipos:
+                            tendencia_txt += " · Tendencia al alza"
+                        if "subida_repentina" in tipos:
+                            tendencia_txt += " · Subida repentina"
+
                 widgets["pie"].configure(
                     text=(
                         "último dato guardado · normal hasta "
                         f"{texto_valor(dato['limite_aviso'], unidad)}"
+                        f"{tendencia_txt}"
                     )
                 )
             else:
