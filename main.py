@@ -522,67 +522,104 @@ class Ventana:
         # Título de la pestaña
         ctk.CTkLabel(
             prediccion,
-            text="Predictibilidad del equipo",
-            font=ctk.CTkFont(family="Segoe UI", size=16, weight="bold"),
+            text="Pronóstico y riesgos",
+            font=ctk.CTkFont(family="Segoe UI", size=18, weight="bold"),
             text_color=TEXTO,
             anchor="w",
-        ).pack(fill="x", padx=16, pady=(16, 8))
-
-        # ---- Score de riesgo global ----
-        self.frame_riesgo = ctk.CTkFrame(
-            prediccion, corner_radius=14, fg_color=TARJETA,
-            border_width=1, border_color=BORDE,
-        )
-        self.frame_riesgo.pack(fill="x", padx=16, pady=(0, 12))
+        ).pack(fill="x", padx=16, pady=(18, 4))
 
         ctk.CTkLabel(
-            self.frame_riesgo,
-            text="Score de riesgo global",
+            prediccion,
+            text="SaludPC analiza cómo están subiendo las temperaturas y te avisa si algo podría empeorar en las próximas horas.",
+            font=self.fuente_sub,
+            text_color=SUAVE,
+            anchor="w",
+            wraplength=700,
+            justify="left",
+        ).pack(fill="x", padx=16, pady=(0, 16))
+
+        # ---- Estado general: score de riesgo ----
+        self.frame_riesgo = ctk.CTkFrame(
+            prediccion, corner_radius=16, fg_color=TARJETA,
+            border_width=1, border_color=BORDE,
+        )
+        self.frame_riesgo.pack(fill="x", padx=16, pady=(0, 14))
+
+        encabezado_riesgo = ctk.CTkFrame(
+            self.frame_riesgo, fg_color="transparent",
+        )
+        encabezado_riesgo.pack(fill="x", padx=18, pady=(14, 8))
+        encabezado_riesgo.grid_columnconfigure(0, weight=1)
+
+        ctk.CTkLabel(
+            encabezado_riesgo,
+            text="Estado general del equipo",
             font=self.fuente_etiqueta,
             text_color=SUAVE,
             anchor="w",
-        ).pack(fill="x", padx=16, pady=(14, 4))
+        ).grid(row=0, column=0, sticky="w")
+
+        self.lbl_nivel_riesgo = ctk.CTkLabel(
+            encabezado_riesgo,
+            text="—",
+            font=self.fuente_estado,
+            text_color=SUAVE,
+            anchor="e",
+        )
+        self.lbl_nivel_riesgo.grid(row=0, column=1, sticky="e")
 
         self.barra_riesgo = ctk.CTkProgressBar(
-            self.frame_riesgo, height=16, corner_radius=8,
+            self.frame_riesgo, height=20, corner_radius=10,
             fg_color=PISTA, progress_color=ESTADO_COLOR["ok"],
         )
-        self.barra_riesgo.pack(fill="x", padx=16, pady=(0, 4))
+        self.barra_riesgo.pack(fill="x", padx=18, pady=(6, 4))
         self.barra_riesgo.set(0)
 
         self.lbl_riesgo = ctk.CTkLabel(
             self.frame_riesgo,
-            text="— / 100  (sin datos)",
+            text="— / 100",
             font=self.fuente_valor,
             text_color=TEXTO,
             anchor="w",
         )
-        self.lbl_riesgo.pack(fill="x", padx=16, pady=(0, 14))
+        self.lbl_riesgo.pack(fill="x", padx=18, pady=(0, 14))
 
-        # ---- Métricas con predictibilidad ----
+        self.lbl_mensaje_riesgo = ctk.CTkLabel(
+            self.frame_riesgo,
+            text="Esperando datos…",
+            font=self.fuente_pie,
+            text_color=SUAVE,
+            anchor="w",
+            wraplength=700,
+            justify="left",
+        )
+        self.lbl_mensaje_riesgo.pack(fill="x", padx=18, pady=(0, 14))
+
+        # ---- Métricas térmicas ----
         self.frame_metricas_pred = ctk.CTkFrame(
-            prediccion, corner_radius=14, fg_color=TARJETA,
+            prediccion, corner_radius=16, fg_color=TARJETA,
             border_width=1, border_color=BORDE,
         )
-        self.frame_metricas_pred.pack(fill="x", padx=16, pady=(0, 12))
+        self.frame_metricas_pred.pack(fill="x", padx=16, pady=(0, 14))
 
         ctk.CTkLabel(
             self.frame_metricas_pred,
-            text="Métricas térmicas con tendencia",
+            text="Temperaturas y su tendencia",
             font=self.fuente_etiqueta,
             text_color=SUAVE,
             anchor="w",
-        ).pack(fill="x", padx=16, pady=(14, 8))
+        ).pack(fill="x", padx=18, pady=(14, 8))
 
         self.scroll_metricas_pred = ctk.CTkScrollableFrame(
-            self.frame_metricas_pred, fg_color="transparent", height=260
+            self.frame_metricas_pred, fg_color="transparent", height=220
         )
         self.scroll_metricas_pred.pack(fill="x", padx=16, pady=(0, 14))
 
         # Tarjetas de predicción por métrica térmica
         for indice, metrica in enumerate(("cpu_temp", "gpu_temp", "disk_temp")):
             tarjeta = ctk.CTkFrame(
-                self.scroll_metricas_pred, corner_radius=10, fg_color="transparent",
+                self.scroll_metricas_pred, corner_radius=12, fg_color=FONDO,
+                border_width=1, border_color=BORDE,
             )
             tarjeta.pack(fill="x", padx=0, pady=4)
             tarjeta.grid_columnconfigure(1, weight=1)
@@ -590,54 +627,58 @@ class Ventana:
             nombre = metricas.NOMBRES.get(metrica, metrica)
             unidad = metricas.UNIDADES.get(metrica, "")
 
+            # Icono de estado (se actualiza luego)
+            lbl_icono = ctk.CTkLabel(
+                tarjeta, text="●",
+                font=self.fuente_punto,
+                text_color=ESTADO_COLOR["sin_datos"],
+                anchor="w",
+                width=20,
+            )
+            lbl_icono.grid(row=0, column=0, rowspan=3, sticky="w", padx=(14, 10), pady=12)
+
             lbl_nombre = ctk.CTkLabel(
                 tarjeta, text=nombre,
                 font=self.fuente_etiqueta, text_color=TEXTO, anchor="w",
             )
-            lbl_nombre.grid(row=0, column=0, sticky="w", padx=4, pady=(8, 2))
+            lbl_nombre.grid(row=0, column=1, sticky="w", pady=(10, 2))
 
             lbl_valor = ctk.CTkLabel(
                 tarjeta, text="—",
                 font=self.fuente_valor, text_color=TEXTO, anchor="w",
             )
-            lbl_valor.grid(row=1, column=0, sticky="w", padx=4, pady=(0, 2))
-
-            lbl_estado = ctk.CTkLabel(
-                tarjeta, text="",
-                font=self.fuente_pie, text_color=SUAVE, anchor="w",
-            )
-            lbl_estado.grid(row=1, column=1, sticky="e", padx=4, pady=(0, 2))
+            lbl_valor.grid(row=1, column=1, sticky="w", pady=(0, 2))
 
             lbl_tendencia = ctk.CTkLabel(
                 tarjeta, text="",
                 font=self.fuente_pie, text_color=SUAVE, anchor="w",
-                wraplength=400,
+                wraplength=500,
             )
-            lbl_tendencia.grid(row=2, column=0, columnspan=2, sticky="w", padx=4, pady=(0, 8))
+            lbl_tendencia.grid(row=2, column=1, sticky="w", pady=(0, 10))
 
             self.tarjetas_pred[metrica] = {
+                "icono": lbl_icono,
                 "valor": lbl_valor,
-                "estado": lbl_estado,
                 "tendencia": lbl_tendencia,
             }
 
-        # ---- Patrones y alarmas ----
+        # ---- Alarmas y patrones ----
         self.frame_patrones = ctk.CTkFrame(
-            prediccion, corner_radius=14, fg_color=TARJETA,
+            prediccion, corner_radius=16, fg_color=TARJETA,
             border_width=1, border_color=BORDE,
         )
         self.frame_patrones.pack(fill="x", padx=16, pady=(0, 16))
 
         ctk.CTkLabel(
             self.frame_patrones,
-            text="Patrones y alarmas predictivas",
+            text="¿Qué debés saber?",
             font=self.fuente_etiqueta,
             text_color=SUAVE,
             anchor="w",
-        ).pack(fill="x", padx=16, pady=(14, 8))
+        ).pack(fill="x", padx=18, pady=(14, 8))
 
         self.scroll_patrones = ctk.CTkScrollableFrame(
-            self.frame_patrones, fg_color="transparent", height=140
+            self.frame_patrones, fg_color="transparent", height=130
         )
         self.scroll_patrones.pack(fill="x", padx=16, pady=(0, 14))
 
@@ -1107,12 +1148,21 @@ class Ventana:
         """Actualiza la pestaña de Predicción con datos de predictibilidad."""
         ultimo = self.ultimo or {}
 
-        # ---- Score de riesgo global ----
+        # ---- Estado general: score de riesgo ----
         riesgo = ultimo.get("riesgo")
         if riesgo:
             score = riesgo["score"]
             nivel = riesgo["nivel"]
             self.barra_riesgo.set(score / 100.0)
+
+            nivel_texto = {
+                "bajo": "Bajo",
+                "medio": "Medio",
+                "alto": "Alto",
+                "critico": "Crítico",
+            }.get(nivel, "Desconocido")
+            self.lbl_nivel_riesgo.configure(text=nivel_texto)
+
             color = {
                 "bajo": ESTADO_COLOR["ok"],
                 "medio": ESTADO_COLOR["atencion"],
@@ -1121,15 +1171,29 @@ class Ventana:
             }.get(nivel, SUAVE)
             self.barra_riesgo.configure(progress_color=color)
             self.lbl_riesgo.configure(
-                text=f"{score:.0f} / 100  ({nivel.upper()})",
-                text_color=color,
+                text=f"{score:.0f} / 100", text_color=color,
+            )
+
+            # Mensaje en lenguaje simple
+            mensajes_riesgo = {
+                "bajo": "Todo parece estar bien. No hay riesgos detectados por ahora.",
+                "medio": "Hay algunas cosas para vigilar, pero nada urgente.",
+                "alto": "Hay valores fuera de lo normal. Te recomendamos revisar el equipo pronto.",
+                "critico": "Hay valores críticos. Te recomendamos revisar el equipo lo antes posible.",
+            }.get(nivel, "")
+            self.lbl_mensaje_riesgo.configure(
+                text=mensajes_riesgo, text_color=color,
             )
         else:
             self.barra_riesgo.set(0)
             self.barra_riesgo.configure(progress_color=ESTADO_COLOR["sin_datos"])
-            self.lbl_riesgo.configure(text="— / 100  (sin datos)", text_color=SUAVE)
+            self.lbl_nivel_riesgo.configure(text="—", text_color=SUAVE)
+            self.lbl_riesgo.configure(text="— / 100", text_color=SUAVE)
+            self.lbl_mensaje_riesgo.configure(
+                text="Esperando datos…", text_color=SUAVE,
+            )
 
-        # ---- Métricas térmicas con predictibilidad ----
+        # ---- Métricas térmicas ----
         detalles = {
             d["metrica"]: d for d in ultimo.get("detalles", [])
         }
@@ -1142,13 +1206,12 @@ class Ventana:
                 widgets["valor"].configure(
                     text=texto_valor(dato["ultimo"], unidad)
                 )
-                estado = dato.get("estado", "ok")
-                widgets["estado"].configure(
-                    text=ETIQUETAS.get(estado, "Sin datos"),
-                    text_color=ESTADO_COLOR.get(estado, SUAVE),
-                )
 
-                # Texto de tendencia
+                estado = dato.get("estado", "ok")
+                color_estado = ESTADO_COLOR.get(estado, SUAVE)
+                widgets["icono"].configure(text_color=color_estado)
+
+                # Texto de tendencia en lenguaje simple
                 pendiente = dato.get("pendiente", 0) or 0
                 confianza = dato.get("confianza", 0) or 0
                 minutos_aviso = dato.get("minutos_a_aviso")
@@ -1156,64 +1219,95 @@ class Ventana:
                 patrones = dato.get("patrones", [])
                 alarma = dato.get("alarma_predictiva", False)
 
-                partes = []
+                lineas = []
+
+                # Estado actual
+                estado_texto = {
+                    "ok": "Normal",
+                    "atencion": "Atención",
+                    "accion": "Revisar",
+                    "sin_datos": "Sin datos",
+                }.get(estado, "Sin datos")
+                lineas.append(estado_texto)
+
+                # Tendencia
                 if abs(pendiente) > 0.01 and confianza > 0.3:
                     direccion = "subiendo" if pendiente > 0 else "bajando"
-                    partes.append(
-                        f"{direccion} {abs(pendiente):.2f}{unidad}/min"
+                    lineas.append(
+                        f"Está {direccion} a {abs(pendiente):.1f}°C por minuto"
                         f" (confianza {confianza:.0%})"
                     )
 
+                # Alarma predictiva
                 if alarma:
-                    partes.append("🚨 ALARMA PREDICTIVA")
+                    lineas.append("🚨 Puede llegar a un nivel crítico pronto")
 
-                if minutos_rojo is not None and minutos_rojo <= 30:
-                    partes.append(f"⚠️ Riesgo en ~{minutos_rojo:.0f} min")
-                elif minutos_aviso is not None and minutos_aviso <= 30:
-                    partes.append(f"⚠️ Aviso en ~{minutos_aviso:.0f} min")
+                # Tiempo a umbral
+                if minutos_rojo is not None and minutos_rojo <= 60:
+                    lineas.append(
+                        f"⏱️ Podría superar el límite seguro en "
+                        f"~{minutos_rojo:.0f} minutos"
+                    )
+                elif minutos_aviso is not None and minutos_aviso <= 60:
+                    lineas.append(
+                        f"⏱️ Podría superar el nivel de aviso en "
+                        f"~{minutos_aviso:.0f} minutos"
+                    )
 
+                # Patrón detectado
                 if patrones:
-                    tipos = [p["tipo"] for p in patrones]
-                    if "tendencia_al_alta" in tipos:
-                        partes.append("Tendencia al alza")
-                    if "subida_repentina" in tipos:
-                        partes.append("Subida repentina")
+                    tipo = patrones[0]["tipo"]
+                    if tipo == "tendencia_al_alta":
+                        lineas.append("Tendencia al alza sostenida")
+                    elif tipo == "subida_repentina":
+                        lineas.append("Subida repentina de temperatura")
 
                 widgets["tendencia"].configure(
-                    text=" · ".join(partes) if partes else "Sin tendencia clara",
-                    text_color=ESTADO_COLOR["accion"] if alarma else SUAVE,
+                    text="  |  ".join(lineas),
+                    text_color=color_estado,
                 )
             else:
                 widgets["valor"].configure(text="—")
-                widgets["estado"].configure(text="Sin datos", text_color=SUAVE)
-                widgets["tendencia"].configure(text="", text_color=SUAVE)
+                widgets["icono"].configure(text_color=ESTADO_COLOR["sin_datos"])
+                widgets["tendencia"].configure(
+                    text="Sin datos", text_color=SUAVE,
+                )
 
-        # ---- Patrones y alarmas ----
+        # ---- Alarmas y patrones ----
         for hijo in self.scroll_patrones.winfo_children():
             hijo.destroy()
 
         tiene_patrones = False
+
+        # Primero las alarmas inmediatas
         for metrica, dato in detalles.items():
             if metrica not in ("cpu_temp", "gpu_temp", "disk_temp"):
                 continue
-            patrones = dato.get("patrones", [])
             alarma = dato.get("alarma_predictiva", False)
             nombre = metricas.NOMBRES.get(metrica, metrica)
 
             if alarma:
                 tiene_patrones = True
                 fila = ctk.CTkFrame(
-                    self.scroll_patrones, fg_color=TARJETA,
-                    corner_radius=8, border_width=1, border_color=BORDE,
+                    self.scroll_patrones, fg_color="#FDE8E6",
+                    corner_radius=10, border_width=1,
+                    border_color=ESTADO_COLOR["accion"],
                 )
-                fila.pack(fill="x", padx=0, pady=3)
+                fila.pack(fill="x", padx=0, pady=4)
                 ctk.CTkLabel(
                     fila,
-                    text=f"🚨 {nombre}: alarma predictiva inmediata",
+                    text=f"🚨 {nombre} podría llegar a un nivel crítico pronto",
                     font=self.fuente_texto,
                     text_color=ESTADO_COLOR["accion"],
                     anchor="w",
-                ).pack(fill="x", padx=10, pady=6)
+                ).pack(fill="x", padx=14, pady=8)
+
+        # Luego los patrones detectados
+        for metrica, dato in detalles.items():
+            if metrica not in ("cpu_temp", "gpu_temp", "disk_temp"):
+                continue
+            patrones = dato.get("patrones", [])
+            nombre = metricas.NOMBRES.get(metrica, metrica)
 
             for patron in patrones:
                 tiene_patrones = True
@@ -1223,27 +1317,30 @@ class Ventana:
                     "media": ESTADO_COLOR["atencion"],
                     "baja": SUAVE,
                 }.get(severidad, SUAVE)
+
+                # Texto del patrón en lenguaje simple
+                descripcion = patron["descripcion"]
                 fila = ctk.CTkFrame(
                     self.scroll_patrones, fg_color=TARJETA,
-                    corner_radius=8, border_width=1, border_color=BORDE,
+                    corner_radius=10, border_width=1, border_color=BORDE,
                 )
-                fila.pack(fill="x", padx=0, pady=3)
+                fila.pack(fill="x", padx=0, pady=4)
                 ctk.CTkLabel(
                     fila,
-                    text=f"● {patron['descripcion']}  ({nombre})",
+                    text=f"● {descripcion}  ({nombre})",
                     font=self.fuente_texto,
                     text_color=color,
                     anchor="w",
-                ).pack(fill="x", padx=10, pady=6)
+                ).pack(fill="x", padx=14, pady=8)
 
         if not tiene_patrones:
             ctk.CTkLabel(
                 self.scroll_patrones,
-                text="Sin patrones de riesgo detectados.",
+                text="✅ Todo parece estar bien. No detectamos patrones de riesgo por ahora.",
                 font=self.fuente_texto,
                 text_color=SUAVE,
                 anchor="w",
-            ).pack(fill="x", padx=10, pady=16)
+            ).pack(fill="x", padx=14, pady=16)
 
     # ------------------------------------------------------------ reporte --
 
