@@ -315,6 +315,10 @@ class Ventana:
 
         self.filtro_actual = "todos"
 
+        # Widgets de la pestaña Predicción (se llenan en _crear_pestanas)
+        self.tarjetas_pred = {}
+        self.labels_patrones = {}
+
         self._crear_encabezado()
         self._crear_pestanas()
         self._crear_pie()
@@ -333,10 +337,6 @@ class Ventana:
         self.error_lectura_actual = None
         self._resultados_lectura = queue.Queue()
         self._lectura_actual_en_curso = False
-
-        # Widgets de la pestaña Predicción (se llenan en _crear_pestanas)
-        self.tarjetas_pred = {}
-        self.labels_patrones = {}
 
         self.raiz.after(150, self.actualizar)
         self.raiz.after(250, self._actualizar_en_vivo)
