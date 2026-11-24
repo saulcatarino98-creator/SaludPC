@@ -7,10 +7,12 @@ import html as _html
 import json
 import logging
 import os
+import secrets
 import sqlite3
+import ssl
 import sys
 import traceback
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
@@ -18,7 +20,34 @@ from urllib.parse import urlparse, parse_qs
 
 # Configuración
 PUERTO = int(os.environ.get("SALUDP_PUERTO", "8443"))
-CLAVE_HMAC_ORG = os.environ.get("SALUDP_ORG_KEY", "clave-organizacion-cambiar-en-produccion")
+
+# Clave HMAC organizacional: obligatoria por variable de entorno.
+CLAVE_HMAC_ORG = os.environ.get("SALUDP_ORG_KEY")
+if not CLAVE_HMAC_ORG:
+    CLAVE_HMAC_ORG = secrets.token_hex(32)
+    log.warning(
+        "SALUDP_ORG_KEY no definida. Se generó una clave temporal aleatoria. "
+        "Defina SALUDP_ORG_KEY para producción."
+    )
+
+# Token de administración para operaciones de escritura (inscripción/eliminación).
+TOKEN_ADMIN = os.environ.get("SALUDP_ADMIN_TOKEN")
+if not TOKEN_ADMIN:
+    TOKEN_ADMIN = secrets.token_hex(32)
+    log.warning(
+        "SALUDP_ADMIN_TOKEN no definida. Se generó un token temporal aleatorio. "
+        "Defina SALUDP_ADMIN_TOKEN para producción."
+    )
+
+# Orígenes permitidos para CORS.
+CORS_ORIGIN_PERMITIDO = os.environ.get("SALUDP_CORS_ORIGIN", "*")
+
+# Edad máxima aceptada de un reporte (minutos) para evitar ataques de repetición.
+REPORTE_EDAD_MAX_MINUTOS = 60
+
+# Nonces recibidos recientemente para evitar repetición (replay attacks).
+_NONCES_RECIENTES: set = set()
+_NONCES_LIMITE = 10000
 
 
 def _directorios_candidatos():
@@ -190,11 +219,34 @@ def crear_base():
                 timestamp TEXT NOT NULL,
                 FOREIGN KEY (id_equipo) REFERENCES equipos(id_equipo)
             );
+
+            CREATE TABLE IF NOT EXISTS admins (
+                id            INTEGER PRIMARY KEY AUTOINCREMENT,
+                nombre        TEXT NOT NULL,
+                token_hash    TEXT NOT NULL,
+                fecha_creacion TEXT NOT NULL,
+                activo        INTEGER DEFAULT 1
+            );
         """)
         columnas = {fila[1] for fila in conexion.execute("PRAGMA table_info(reportes)")}
         if "fecha_local" not in columnas:
             conexion.execute("ALTER TABLE reportes ADD COLUMN fecha_local TEXT")
         conexion.commit()
+
+        # Insertar admin por defecto si no existe ninguno.
+        fila_admin = conexion.execute("SELECT COUNT(*) FROM admins").fetchone()
+        if fila_admin and fila_admin[0] == 0:
+            ahora_admin = datetime.now(timezone.utc).isoformat(timespec="seconds")
+            token_hash = hashlib.sha256(TOKEN_ADMIN.encode("utf-8")).hexdigest()
+            conexion.execute(
+                """
+                INSERT INTO admins (nombre, token_hash, fecha_creacion, activo)
+                VALUES (?, ?, ?, 1)
+                """,
+                ("admin", token_hash, ahora_admin),
+            )
+            conexion.commit()
+            log.info("Administrador por defecto creado (token en SALUDP_ADMIN_TOKEN).")
     finally:
         conexion.close()
 
@@ -475,9 +527,9 @@ class ManejadorSaludPC(BaseHTTPRequestHandler):
         self.send_response(codigo)
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Content-Length", str(len(cuerpo)))
-        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Origin", CORS_ORIGIN_PERMITIDO)
         self.send_header("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS")
-        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization")
         self.end_headers()
         self.wfile.write(cuerpo)
 
@@ -485,11 +537,54 @@ class ManejadorSaludPC(BaseHTTPRequestHandler):
         largo = int(self.headers.get("Content-Length", 0))
         return self.rfile.read(largo).decode("utf-8") if largo > 0 else ""
 
+    def _obtener_token_autorizacion(self):
+        """Extrae el token del header Authorization: Bearer <token>."""
+        auth = self.headers.get("Authorization", "")
+        if auth.startswith("Bearer "):
+            return auth[7:].strip()
+        return None
+
+    def _verificar_admin(self):
+        """Valida que la petición incluya un token de administrador válido."""
+        token = self._obtener_token_autorizacion()
+        if not token:
+            return False
+        esperado_hash = hashlib.sha256(TOKEN_ADMIN.encode("utf-8")).hexdigest()
+        recibido_hash = hashlib.sha256(token.encode("utf-8")).hexdigest()
+        return hmac.compare_digest(esperado_hash, recibido_hash)
+
+    def _validar_nonce_y_edad(self, datos):
+        """Valida que el reporte no sea una repetición y que sea reciente."""
+        ahora = datetime.now(timezone.utc)
+
+        nonce = datos.get("nonce")
+        if not nonce:
+            return False, "nonce requerido"
+        if nonce in _NONCES_RECIENTES:
+            return False, "nonce duplicado (reporte repetido)"
+        if len(_NONCES_RECIENTES) >= _NONCES_LIMITE:
+            _NONCES_RECIENTES.clear()
+        _NONCES_RECIENTES.add(nonce)
+
+        ts_reporte = datos.get("timestamp")
+        if ts_reporte:
+            try:
+                momento = datetime.fromisoformat(ts_reporte)
+                if momento.tzinfo is None:
+                    momento = momento.replace(tzinfo=timezone.utc)
+                edad_minutos = (ahora - momento).total_seconds() / 60.0
+                if abs(edad_minutos) > REPORTE_EDAD_MAX_MINUTOS:
+                    return False, f"reporte demasiado antiguo ({edad_minutos:.0f} min)"
+            except (ValueError, TypeError):
+                return False, "timestamp inválido"
+
+        return True, None
+
     def do_OPTIONS(self):
         self.send_response(200)
-        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Origin", CORS_ORIGIN_PERMITIDO)
         self.send_header("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS")
-        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization")
         self.end_headers()
 
     def do_POST(self):
@@ -497,12 +592,18 @@ class ManejadorSaludPC(BaseHTTPRequestHandler):
         cuerpo = self._leer_cuerpo()
         try:
             if ruta == "/inscribir":
+                if not self._verificar_admin():
+                    self._enviar_json(401, {"error": "Token de administrador requerido"})
+                    return
                 self._ruta_inscribir(cuerpo)
             elif ruta == "/reporte":
                 self._ruta_reporte(cuerpo)
             elif ruta == "/aviso":
                 self._ruta_aviso(cuerpo)
             elif ruta == "/eliminar":
+                if not self._verificar_admin():
+                    self._enviar_json(401, {"error": "Token de administrador requerido"})
+                    return
                 self._ruta_eliminar_equipo(cuerpo)
             else:
                 self._enviar_json(404, {"error": "ruta no encontrada"})
@@ -514,6 +615,9 @@ class ManejadorSaludPC(BaseHTTPRequestHandler):
         ruta = urlparse(self.path).path
         cuerpo = self._leer_cuerpo()
         if ruta == "/eliminar":
+            if not self._verificar_admin():
+                self._enviar_json(401, {"error": "Token de administrador requerido"})
+                return
             self._ruta_eliminar_equipo(cuerpo)
         else:
             self._enviar_json(404, {"error": "ruta no encontrada"})
@@ -597,17 +701,30 @@ class ManejadorSaludPC(BaseHTTPRequestHandler):
         if not id_equipo or not firma_recibida:
             self._enviar_json(400, {"error": "id_equipo y firma_hmac son requeridos"})
             return
+
+        # Validar nonce y edad del reporte (anti-replay y anti-reporte antiguo).
+        valido, motivo = self._validar_nonce_y_edad(datos)
+        if not valido:
+            log.warning("Reporte rechazado de %s: %s", id_equipo, motivo)
+            self._enviar_json(400, {"error": motivo})
+            return
+
         token = obtener_token(id_equipo)
         if token is None:
             self._enviar_json(403, {"error": "Equipo no inscrito"})
             return
+
         datos_sin_firma = dict(datos)
         datos_sin_firma.pop("firma_hmac", None)
-        cuerpo_sin_firma = json.dumps(datos_sin_firma, ensure_ascii=False)
+        datos_sin_firma.pop("nonce", None)
+        datos_sin_firma.pop("timestamp", None)
+        cuerpo_sin_firma = json.dumps(datos_sin_firma, ensure_ascii=False, sort_keys=True)
+
         if not verificar_firma(cuerpo_sin_firma, firma_recibida, token):
             log.warning("Firma inválida de equipo: %s", id_equipo)
             self._enviar_json(403, {"error": "Firma inválida"})
             return
+
         if guardar_reporte(id_equipo, datos, firma_recibida):
             log.info("Reporte guardado: %s", id_equipo)
             self._enviar_json(200, {"ok": True, "mensaje": "Reporte recibido"})
@@ -626,10 +743,21 @@ class ManejadorSaludPC(BaseHTTPRequestHandler):
         if not id_equipo or not estado:
             self._enviar_json(400, {"error": "id_equipo y estado son requeridos"})
             return
-        token = obtener_token(id_equipo)
-        if token is None:
+
+        # Autenticar al equipo mediante su token en el header Authorization.
+        token_recibido = self._obtener_token_autorizacion()
+        if not token_recibido:
+            self._enviar_json(401, {"error": "Token de equipo requerido"})
+            return
+
+        token_esperado = obtener_token(id_equipo)
+        if token_esperado is None:
             self._enviar_json(403, {"error": "Equipo no inscrito"})
             return
+        if not hmac.compare_digest(token_recibido, token_esperado):
+            self._enviar_json(403, {"error": "Token de equipo inválido"})
+            return
+
         try:
             conexion = sqlite3.connect(RUTA_DB)
             ahora = datetime.now(timezone.utc).isoformat(timespec="seconds")
@@ -1285,11 +1413,28 @@ def main():
 
     log.info("Base de datos: %s", RUTA_DB)
     log.info("Registro: %s", RUTA_LOG)
+
+    # Soporte opcional HTTPS mediante variables de entorno.
+    cert_file = os.environ.get("SALUDP_SSL_CERT")
+    key_file = os.environ.get("SALUDP_SSL_KEY")
+    if cert_file and key_file:
+        contexto = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+        contexto.load_cert_chain(cert_file, key_file)
+        servidor.socket = contexto.wrap_socket(servidor.socket, server_side=True)
+        esquema = "https"
+        log.info("TLS habilitado con certificado %s", cert_file)
+    else:
+        esquema = "http"
+        log.warning(
+            "TLS no habilitado (defina SALUDP_SSL_CERT y SALUDP_SSL_KEY). "
+            "El tráfico irá en texto plano."
+        )
+
     log.info("Servidor central SaludPC escuchando en el puerto %d", PUERTO)
-    log.info("Panel de TI: http://localhost:%d/", PUERTO)
+    log.info("Panel de TI: %s://localhost:%d/", esquema, PUERTO)
     print(f"Servidor SaludPC iniciado en el puerto {PUERTO}")
     print(f"Base de datos: {RUTA_DB}")
-    print(f"Panel de TI: http://localhost:{PUERTO}/")
+    print(f"Panel de TI: {esquema}://localhost:{PUERTO}/")
     print("Presiona Ctrl+C para detener")
     try:
         servidor.serve_forever()

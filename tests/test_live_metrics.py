@@ -1,7 +1,11 @@
 from contextlib import ExitStack
 from types import SimpleNamespace
+import sys
+from pathlib import Path
 import unittest
 from unittest.mock import patch
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import colector
 from main import Ventana
@@ -83,9 +87,8 @@ class LiveMetricsTests(unittest.TestCase):
 
     def test_dashboard_cards_show_live_values_instead_of_saved_values(self):
         ventana = Ventana.__new__(Ventana)
-        valor = FakeWidget()
-        barra = FakeWidget()
-        pie = FakeWidget()
+        # Atributos mínimos que _pintar_tarjetas necesita; Ventana.__init__
+        # no se ejecuta (evita crear una ventana tkinter real en el test).
         ventana.ultimo = {
             "detalles": [
                 {
@@ -99,6 +102,9 @@ class LiveMetricsTests(unittest.TestCase):
             ]
         }
         ventana.lecturas_actuales = {"cpu_load": (74.0, "%")}
+        valor = FakeWidget()
+        barra = FakeWidget()
+        pie = FakeWidget()
         ventana.tarjetas = {
             "cpu_load": {"valor": valor, "barra": barra, "pie": pie}
         }

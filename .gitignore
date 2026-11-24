@@ -1,0 +1,90 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+parts/
+lib/
+lib64/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# SaludPC data (local, per-machine)
+salud.db
+salud.db-wal
+salud.db-shm
+consumo_servicio.json
+ultimo_estado_aviso.json
+episodios_abiertos.json
+baseline_*.json
+config_usuario.json
+*.log
+
+# Enterprise server local data
+servidor_central.db
+servidor.log
+token_equipo.json
+config_cliente.json
+
+# Temporary / generated
+resultado_modelo.txt
+reporte_*.html
+_manual_word.html
+_bitacora_word.html
+
+# Backups
+backup_*/
+respaldo_*/
+*.bak

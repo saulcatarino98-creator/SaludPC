@@ -17,7 +17,7 @@ from urllib.parse import quote
 
 
 class ClienteEnterprise:
-    def __init__(self, id_equipo, token, url_servidor="http://localhost:8443"):
+    def __init__(self, id_equipo, token, url_servidor="https://localhost:8443"):
         self.id_equipo = id_equipo
         self.token = token or ""
         self.url_servidor = url_servidor.rstrip("/")
@@ -96,11 +96,26 @@ class ClienteEnterprise:
 
     def consultar_progreso(self):
         """Consulta el avance de aprendizaje registrado en el servidor."""
-        ruta = (
-            "/progreso?id="
-            f"{quote(self.id_equipo)}&token={quote(self.token)}"
+        # El token se envía en el header Authorization, no en la URL.
+        ruta = f"/progreso?id={quote(self.id_equipo)}"
+        peticion = urllib.request.Request(
+            f"{self.url_servidor}{ruta}",
+            method="GET",
         )
-        return self._pedir_json(ruta, metodo="GET")
+        if self.token:
+            peticion.add_header("Authorization", f"Bearer {self.token}")
+        try:
+            with urllib.request.urlopen(peticion, timeout=10) as respuesta:
+                return json.loads(respuesta.read().decode("utf-8"))
+        except urllib.error.HTTPError as error:
+            try:
+                return json.loads(error.read().decode("utf-8"))
+            except (ValueError, OSError):
+                return {"ok": False, "error": f"HTTP {error.code}"}
+        except urllib.error.URLError as error:
+            return {"ok": False, "error": f"No se pudo conectar: {error.reason}"}
+        except (ValueError, OSError) as error:
+            return {"ok": False, "error": str(error)}
 
 
 # ---------------------------------------------------------------------------

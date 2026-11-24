@@ -100,6 +100,22 @@ PISOS_AVISO = {
     "temp_trend_disk": 0.2,
 }
 
+# Indica si una métrica es peligrosa por exceso (valor alto = malo) o por
+# defecto (valor bajo = malo). Las métricas no listadas se asumen "por_exceso".
+DIRECCION_UMBRAL = {
+    # Voltajes: valores bajos indican falla de fuente
+    "psu_12v": "por_defecto",
+    "psu_5v": "por_defecto",
+    "psu_3v3": "por_defecto",
+    # Ventiladores: RPM bajos indican falla u obstrucción
+    "fan_cpu_rpm": "por_defecto",
+    "fan_chasis_rpm": "por_defecto",
+    "fan_gpu_rpm": "por_defecto",
+    # Salud del disco: porcentaje bajo indica disco deteriorado
+    "disk_smart_health": "por_defecto",
+    # Todo lo demás (cargas, temperaturas, tendencias) es por exceso.
+}
+
 
 def clasificar_avanzado(categoria, sensor, tipo):
     """Clasifica sensores de voltaje, ventilador y salud de disco.

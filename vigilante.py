@@ -109,30 +109,42 @@ def limite_para(entrada, ahora_local):
     return entrada["limite_aviso"], entrada["limite_rojo"]
 
 
-def estado_metrica(valores, aviso, rojo):
-    """Pide que la desviación se sostenga: no alerta por un pico de un segundo."""
+def estado_metrica(valores, aviso, rojo, direccion="por_exceso"):
+    """Pide que la desviación se sostenga: no alerta por un pico de un segundo.
+
+    `direccion` puede ser "por_exceso" (valor alto = malo, el default) o
+    "por_defecto" (valor bajo = malo, p. ej. voltajes, ventiladores, SMART).
+    """
     if not valores:
         return "sin_datos"
-    if sum(1 for valor in valores if valor >= rojo) >= 2:
-        return "accion"
-    if sum(1 for valor in valores if valor >= aviso) >= 3:
-        return "atencion"
+    if direccion == "por_defecto":
+        if sum(1 for valor in valores if valor <= rojo) >= 2:
+            return "accion"
+        if sum(1 for valor in valores if valor <= aviso) >= 3:
+            return "atencion"
+    else:
+        if sum(1 for valor in valores if valor >= rojo) >= 2:
+            return "accion"
+        if sum(1 for valor in valores if valor >= aviso) >= 3:
+            return "atencion"
     return "ok"
 
 
 def leer_valores(ahora, horas=6):
     desde = (ahora - timedelta(hours=horas)).isoformat(timespec="seconds")
     por_metrica = {}
+    por_metrica_tiempos = {}
     ultima = None
     for ts, metrica, valor, _ in almacen.leer(desde=desde):
-        por_metrica.setdefault(metrica, []).append(float(valor))
         try:
             marca = datetime.fromisoformat(ts)
         except ValueError:
             continue
+        por_metrica.setdefault(metrica, []).append(float(valor))
+        por_metrica_tiempos.setdefault(metrica, []).append(marca)
         if ultima is None or marca > ultima:
             ultima = marca
-    return por_metrica, ultima
+    return por_metrica, por_metrica_tiempos, ultima
 
 
 def diagnosticar(directorio=None, ahora=None):
@@ -151,7 +163,7 @@ def diagnosticar(directorio=None, ahora=None):
     if baseline.get("aprendiendo"):
         dias = int(baseline.get("dias") or 0)
         muestras = int(baseline.get("muestras") or 0)
-        _, ultima = leer_valores(ahora)
+        _, _, ultima = leer_valores(ahora)
         return salida(
             "aprendiendo",
             f"Estamos conociendo tu equipo ({dias} de 3 días, "
@@ -160,7 +172,7 @@ def diagnosticar(directorio=None, ahora=None):
             ultima=ultima,
         )
 
-    por_metrica, ultima = leer_valores(ahora)
+    por_metrica, tiempos_por_metrica, ultima = leer_valores(ahora)
     if ultima is None:
         return salida(
             "sin_datos",
@@ -182,24 +194,16 @@ def diagnosticar(directorio=None, ahora=None):
         if metrica not in metricas.UNIDADES:
             continue
         valores = por_metrica.get(metrica, [])[-5:]
+        tiempos_metrica = tiempos_por_metrica.get(metrica, [])[-5:]
         if not valores:
             continue
 
         aviso, rojo = limite_para(entrada, ahora_local)
-        estado = estado_metrica(valores, aviso, rojo)
+        direccion = metricas.DIRECCION_UMBRAL.get(metrica, "por_exceso")
+        estado = estado_metrica(valores, aviso, rojo, direccion)
 
         # ---- Análisis predictivo avanzado ----
-        # Obtenemos tiempos para calcular tendencia con confianza
-        desde = (ahora - timedelta(hours=6)).isoformat(timespec="seconds")
-        tiempos_metrica = []
-        for ts, met, valor, _ in almacen.leer(desde=desde):
-            if met == metrica:
-                try:
-                    tiempos_metrica.append(datetime.fromisoformat(ts))
-                except ValueError:
-                    continue
-        tiempos_metrica.sort()
-
+        # Los tiempos corresponden exactamente a los mismos valores usados.
         pred = analisis_predictivo_completo(
             valores, tiempos_metrica, aviso, rojo, valor_actual=valores[-1]
         )

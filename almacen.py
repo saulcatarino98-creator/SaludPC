@@ -255,6 +255,32 @@ def ultimo_evento_id():
         conexion.close()
 
 
+def leer_resumen_diario(desde=None):
+    """Devuelve [(dia, metrica, n, minimo, promedio, maximo), ...] del resumen diario.
+
+    Se usa para reconstruir histórico cuando las muestras detalladas ya fueron
+    comprimidas por la retención (más de 90 días).
+    """
+    if not RUTA_DB.exists():
+        return []
+    conexion = conectar()
+    try:
+        sql = (
+            "SELECT dia, metrica, n, minimo, promedio, maximo "
+            "FROM resumen_diario"
+        )
+        parametros = ()
+        if desde:
+            sql += " WHERE dia >= ?"
+            parametros = (desde,)
+        sql += " ORDER BY dia, metrica"
+        return conexion.execute(sql, parametros).fetchall()
+    except sqlite3.OperationalError:
+        return []
+    finally:
+        conexion.close()
+
+
 def huella_equipo():
     """Identifica el hardware para saber si el baseline sigue siendo valido."""
     import hashlib
